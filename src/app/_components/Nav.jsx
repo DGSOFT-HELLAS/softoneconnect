@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { Moon, Sun, ChevronDown } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
+import ThemeSwitch from "./ToggleTheme"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,22 +12,20 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { menuData } from "@/menuConfig"
 import Link from "next/link"
+import Logo from "./Logo"
+import ProfileAvatar from "./ProfileAvatar"
+
 
 export function Nav() {
     return (
         <div className="nav_container">
-            <div className="nav_logo">
-                <span className="">
-                    <span className="logo_start">DG</span>
-                    <span className="logo_end">SOFT</span>
-                    <span className="logo_start">.</span>
-                </span>
-            </div>
+           
+            < Logo />
             <nav>
             </nav>
             <div className="nav_buttons">
-                <ModeToggle />
-                <Profile />
+                <ThemeSwitch />
+                <ProfileAvatar />
             </div>
 
         </div>

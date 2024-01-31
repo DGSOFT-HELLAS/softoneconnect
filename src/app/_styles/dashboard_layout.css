@@ -8,11 +8,11 @@
 }
 
 .logo_start {
-    color: hsl(var(--foreground));
+    color: var(--foreground);
     
 }
 .logo_end {
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
 
 }
 
@@ -23,7 +23,7 @@
 
 .nav_container {
     height: 70px;
-    border-bottom: 1px solid hsl(var(--border));
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     left: 0;
@@ -37,7 +37,6 @@
 }
 
 .dash_content {
-    /* height: calc(100vh - var); */
     position: relative;
     display: grid;
     grid-template-rows: 1fr;
@@ -45,7 +44,7 @@
 }
 
 .sidebar {
-    border-right: 1px solid hsl(var(--border));
+    border-right: 1px solid var(--border);
     position: sticky;
     display: flex;
     align-items: space-between;
@@ -57,7 +56,6 @@
 
 
 .main {
-    /* margin-left: 250px; */
     overflow-y: scroll;
     padding: 30px;
     height: calc(100vh - 60px);
@@ -87,12 +85,12 @@
 
 .avatar_text span {
     font-size: var(--font-xs);
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
 }
 
 
 .toggle_theme {
-    border: 1px solid  hsl(var(--border));
+    border: 1px solid  var(--border);
 }
 
 .sidebar_inner {
@@ -110,13 +108,13 @@
     align-items: center;
     justify-content: space-between;
     border-radius: 50px;
-    color: var(--muted);
+    /* color: var(--muted); */
     font-size: var(--font-sm-md);
 }
 
 .sidebar_header  {
     font-size: var(--font-sm);
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     font-weight: 600;
     letter-spacing: 1.2px;
     margin-bottom: 8px;
@@ -125,26 +123,15 @@
 
 .sidebar_item svg {
     width: 20px;
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
 }
 
 .sidebar_subitems {
     padding-left: 8px;
-    border-left: 1px solid hsl(var(--muted-foreground));
+    border-left: 1px solid var(--muted-foreground);
     position: relative;
     margin: 8px 0px;
     font-size: var(--font-sm);
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
 }
 
-/* .sidebar_subitems::before {
-    content: "";
-    width: 5px;
-    height: 1px;
-    border-radius: 50%;
-    background-color: hsl(var(--foreground));
-    position: absolute;
-    left: -1px;
-    top: 50%;
-    transform: translateY(-50%);
-} */

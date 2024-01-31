@@ -7,34 +7,36 @@
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
+        --background: hsl(0 0% 100%);
+        --foreground: hsl(222.2 84% 4.9%);
 
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
+        --card: hsl(0 0% 100%);
+        --card_100: hsl(0, 27%, 96%);
+        --card_200: hsl(0, 12%, 87%);
+        --card_300: hsl(0, 9%, 85%);
+        --card-foreground: hsl(222.2 84% 4.9%);
+        --popover: hsl(0 0% 100%);
+        --popover-foreground: hsl(222.2 84% 4.9%);
 
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
+        /* --primary: hsl(240 5.9% 10%); */
+        --primary: hsl(341, 100%, 50%, 1);
+        --primary-foreground: hsl(210 40% 98%);
 
-        --primary: 240 5.9% 10%;
-        --primary-foreground: 210 40% 98%;
+        --secondary: hsl(210 40% 96.1%);
+        --secondary-foreground: hsl(222.2 47.4% 11.2%);
 
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
+        --muted: hsl(210 40% 96.1%);
+        --muted-foreground: hsl(215.4 16.3% 46.9%);
 
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
+        --accent: hsl( 210 40% 96.1%);
+        --accent-foreground: hsl(222.2 47.4% 11.2%);
 
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
+        --destructive: hsl(0 84.2% 60.2%);
+        --destructive-foreground: hsl(210 40% 98%);
 
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 222.2 84% 4.9%;
-
+        --border: hsl(214.3 31.8% 91.4%);
+        --input: hsl(214.3 31.8% 91.4%);
+        --ring: hsl(222.2 84% 4.9%);
         --radius: 0.5rem;
         --font-xs: 0.80rem;
         --font-sm: 0.875rem;
@@ -48,34 +50,35 @@
     }
 
     .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
+        --background: hsl(0, 0%, 0%);
+        --foreground: hsl(210 40% 98%);
+        --card: hsl(222.2 84% 4.9%);
+        --card-foreground: hsl(210 40% 98%);
+        --card_100: hsl(0, 3%, 32%);
+        --card_200: hsl(0, 12%, 87%);
+        --card_300: hsl(0, 9%, 85%);
+        --popover: hsl(222.2 84% 4.9%);
+        --popover-foreground: hsl(210 40% 98%);
 
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
+        --primary: hsl(341, 100%, 50%, 1);
+        --primary-foreground: hsl(222.2 47.4% 11.2%);
 
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
+        --secondary: hsl(217.2 32.6% 17.5%);
+        --secondary-foreground: hsl(210 40% 98%);
 
-        --primary: 210 40% 98%;
-        --primary-foreground: 222.2 47.4% 11.2%;
+        --muted: hsl(217.2 32.6% 17.5%);
+        --muted-foreground: hsl(215 20.2% 65.1%);
 
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
+        --accent: hsl(217.2 32.6% 17.5%);
+        --accent-foreground: hsl(210 40% 98%);
 
-        --muted: 217.2 32.6% 17.5%;
-        --muted-foreground: 215 20.2% 65.1%;
+        --destructive: hsl(0 62.8% 30.6%);
+        --destructive-foreground: hsl(210 40% 98%);
 
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
-
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
-
-        --border: 217.2 32.6% 40%;
+        --border: hsl(217.2 32.6% 40%);
         
-        --input: 217.2 32.6% 17.5%;
-        --ring: 212.7 26.8% 83.9%;
+        --input: hsl(217.2 32.6% 17.5%);
+        --ring: hsl(212.7 26.8% 83.9%);
     }
 }
 
@@ -112,11 +115,12 @@ body {
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: hsl(var(--foreground)));
+    background: hsl(var(--background));
   }
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
+    border-radius: 2px;
     background: hsl(var(--muted-foreground));
   }
   
@@ -141,14 +145,14 @@ body {
 
 .auth_form_container {
     padding: 2rem;
-    border: 1px solid hsl(var(--border));
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.048);
     width: 450px;
 }
 
 .auth_brand {
-    background-color: hsl(var(--foreground));
+    background-color: var(--foreground);
     padding: 2rem;
     flex-direction: column;
     align-items: space-between;
@@ -166,7 +170,7 @@ body {
 
 .register_text p {
     font-size: var(--font-sm);
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
 }
 
 .password_input {
@@ -181,7 +185,7 @@ body {
     cursor: pointer;
     font-size: 12px;
     width: 1.2rem;
-    color: hsl(var(--muted-foreground))
+    color: var(--muted-foreground)
 }
 
 .register_divider {
@@ -195,13 +199,13 @@ body {
 .divider_line {
     width: 100%;
     height: 1px;
-    background-color: hsl(var(--border));
+    background-color: var(--border);
 }
 
 .divider_text {
     font-size: 0.9rem;
     text-align: center;
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
 }
 
 .google_button {
@@ -241,7 +245,7 @@ body {
 
 .forgot_pass_container span {
     font-size: var(--font-sm);
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     text-decoration: underline;
     cursor: pointer;
 }
@@ -249,7 +253,7 @@ body {
 .go_back_link {
     text-align: center;
     font-size: var(--font-sm);
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     text-decoration: underline;
 }
 
