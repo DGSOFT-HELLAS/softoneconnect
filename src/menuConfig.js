@@ -1,19 +1,10 @@
+import { LayoutDashboard } from 'lucide-react';
 export const menuData = [
     {
         id: 1,
-        title: 'Βασικές Εργασίες',
-        links: [
-            {
-                title: 'Ζύγιση',
-                href: '/weighing'
-            },
-
-            {
-                title: 'Διαχείριση Αποβλήτων',
-                href: '/waste-management'
-            },
-
-        ]
+        title: 'Dashboard',
+        icon: <LayoutDashboard />,
+        
     },
     {
         id: 2,
