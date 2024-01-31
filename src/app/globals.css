@@ -99,9 +99,33 @@
 
 
 
+
+
 body {
     overflow: hidden;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--foreground)));
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+
 .space-y-2> :not([hidden])~ :not([hidden]) {
     margin-top: 0;
 }
