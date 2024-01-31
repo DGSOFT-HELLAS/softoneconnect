@@ -93,44 +93,4 @@
     border: 1px solid  var(--border);
 }
 
-.sidebar_inner {
-    padding: 10px;
-}
-
-.sidebar_item_container {
-    margin-bottom: 16px;
-}
-.sidebar_item {
-    user-select: none;
-    --webkit-user-select: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 50px;
-    font-size: var(--font-sm-md);
-}
-
-.sidebar_header  {
-    font-size: var(--font-sm);
-    color: var(--muted-foreground);
-    font-weight: 600;
-    letter-spacing: 1.2px;
-    margin-bottom: 8px;
-
-}
-
-.sidebar_item svg {
-    width: 20px;
-    color: var(--muted-foreground);
-}
-
-.sidebar_subitems {
-    padding-left: 8px;
-    border-left: 1px solid var(--muted-foreground);
-    position: relative;
-    margin: 8px 0px;
-    font-size: var(--font-sm);
-    color: var(--muted-foreground);
-}
 

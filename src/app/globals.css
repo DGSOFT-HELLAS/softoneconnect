@@ -5,15 +5,28 @@
 
 @import './_styles/dashboard_layout.css';
 
+
+
+:root {
+    --radius-sm: 0.30rem;
+    --font-xs: 0.80rem;
+    --font-sm: 0.875rem;
+    --font-sm-md: 0.9375rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.5rem;
+    --font-2xl: 1.75rem;
+    --font-3xl: 2rem;
+    --font-4xl: 2.5rem;
+}
 @layer base {
     :root {
         --background: hsl(0 0% 100%);
         --foreground: hsl(222.2 84% 4.9%);
-
-        --card: hsl(0 0% 100%);
+        --card: hsl(0, 0%, 96%);
         --card_100: hsl(0, 27%, 96%);
-        --card_200: hsl(0, 12%, 87%);
-        --card_300: hsl(0, 9%, 85%);
+        /* --card_200: hsl(0, 12%, 87%);
+        --card_300: hsl(0, 9%, 85%); */
         --card-foreground: hsl(222.2 84% 4.9%);
         --popover: hsl(0 0% 100%);
         --popover-foreground: hsl(222.2 84% 4.9%);
@@ -38,23 +51,14 @@
         --input: hsl(214.3 31.8% 91.4%);
         --ring: hsl(222.2 84% 4.9%);
         --radius: 0.5rem;
-        --font-xs: 0.80rem;
-        --font-sm: 0.875rem;
-        --font-sm-md: 0.9375rem;
-        --font-md: 1rem;
-        --font-lg: 1.125rem;
-        --font-xl: 1.5rem;
-        --font-2xl: 1.75rem;
-        --font-3xl: 2rem;
-        --font-4xl: 2.5rem;
+       
     }
 
     .dark {
         --background: hsl(0, 0%, 0%);
         --foreground: hsl(210 40% 98%);
-        --card: hsl(222.2 84% 4.9%);
         --card-foreground: hsl(210 40% 98%);
-        --card_100: hsl(0, 3%, 32%);
+        --card:  hsl(220, 11%, 16%);
         --card_200: hsl(0, 12%, 87%);
         --card_300: hsl(0, 9%, 85%);
         --popover: hsl(222.2 84% 4.9%);

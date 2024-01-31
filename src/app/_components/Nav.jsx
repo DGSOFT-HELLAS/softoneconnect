@@ -10,11 +10,10 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { menuData } from "@/menuConfig"
+import { menuData } from "@/app/_components/Sidebar/menuConfig"
 import Link from "next/link"
 import Logo from "./Logo"
 import ProfileAvatar from "./ProfileAvatar"
-
 
 export function Nav() {
     return (
@@ -70,10 +69,7 @@ export function SidebarContent() {
     const [active, setActive] = useState(null)
 
 
-    useEffect(() => {
-        console.log('layout main')
-        console.log(menuData)
-    }, [])
+   
     return (
         <aside className="sidebar">
             <div className="sidebar_inner" >
