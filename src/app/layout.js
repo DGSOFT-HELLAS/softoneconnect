@@ -3,6 +3,8 @@ import "./globals.css";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
+
+
 import { ThemeProvider } from "./_components/ThemeProvider";
 export const metadata = {
   title: "Create Next App",
@@ -11,7 +13,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning  lang="en">
       <body className={inter.className}>
       <ThemeProvider
             attribute="class"

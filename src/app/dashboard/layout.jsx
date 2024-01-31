@@ -1,16 +1,13 @@
 
 
-'use client'
+import { SidebarContent } from "../_components/Nav"
 import { Nav } from "../_components/Nav"
 export default function DashboardLayout({children}) {
     return (
         <section className="dash_wrapper">
              <Nav />
              <section className="dash_content">
-                    <aside className="sidebar">
-                        <p>sidebar</p>
-                        <p>sidebar</p>
-                    </aside>
+                       <SidebarContent />
                     <main className="main">{children}</main>
              </section>
         </section>

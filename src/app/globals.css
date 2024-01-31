@@ -36,7 +36,9 @@
         --ring: 222.2 84% 4.9%;
 
         --radius: 0.5rem;
+        --font-xs: 0.80rem;
         --font-sm: 0.875rem;
+        --font-sm-md: 0.9375rem;
         --font-md: 1rem;
         --font-lg: 1.125rem;
         --font-xl: 1.5rem;
