@@ -1,15 +1,19 @@
-import { Metadata } from "next"
-import Image from "next/image"
-import Link from "next/link"
-import { FcGoogle } from "react-icons/fc";
-import { Button } from "@/components/ui/button";
 import LoginForm from "@/app/_components/LoginForm";
+
+
+
+
 export const metadata = {
     title: "Authentication",
     description: "Authentication forms built using the components.",
 }
 
+
+
+
 export default function Login() {
+
+  
     return (
         <div className="auth_container">
             <div className="auth_form_container">

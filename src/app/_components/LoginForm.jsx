@@ -1,4 +1,5 @@
 "use client"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Lock } from 'lucide-react';
@@ -15,10 +16,10 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from 'lucide-react';
-import axios from "axios";
-import { toast} from 'react-toastify';
+
 import { CheckboxWithText } from "./InputCheck";
 import Link from "next/link"
+import { useRouter } from "next/navigation";
 
 
 const FormSchema = z.object({
@@ -31,6 +32,7 @@ const FormSchema = z.object({
 
 export default function LoginForm() {
     const [inputType, setInputType] = useState('password');
+    const router = useRouter();
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -39,20 +41,25 @@ export default function LoginForm() {
         },
     })
 
+ 
     const onSubmit = async (data) => {
-      
+       
         try {
-            const res = await axios.post(`http://localhosft:4000/auth/login`, data);
-            console.log(res.data)
-            if(!res.data.success) {
-                toast.error("Wrong credentials!  Try again", {
-                    position: "top-right"
-                  });
-            } else {
-                toast.success("Login successful!", {
-                    position: "top-right"
-                  });
-            }
+            let res = await fetch('http://localhost:4000/auth/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                credentials: 'include', // Include credentials (cookies) in the request
+                body: JSON.stringify({
+                    email: "giannis.chiout@gmail.com",
+                    password: "1234c"
+                }),
+              })
+               let json = await res.json()
+            console.log(json)
+
+            
 
         } catch (error) {
             console.log('error')

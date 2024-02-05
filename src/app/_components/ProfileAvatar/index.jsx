@@ -13,6 +13,7 @@ import {
   DropdownMenuShortcut
 } from "@/components/ui/dropdown-menu"
 import { FaAngleDown } from "react-icons/fa";
+import { logout } from '@/utils/functions'
 
 
 const ProfileAvatar = () => {
@@ -64,7 +65,13 @@ const ProfileAvatar = () => {
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
-        Log out
+        <Button
+          variant="ghost"
+          onClick={logout}
+        >
+
+        </Button>
+        
         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
       </DropdownMenuItem>
     </DropdownMenuContent>
