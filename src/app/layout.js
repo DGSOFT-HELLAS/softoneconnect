@@ -20,7 +20,6 @@ export default function RootLayout({ children, session, ...pageProps }) {
 
     <html suppressHydrationWarning lang="en">
       <body className={roboto.className}>
-        <SessionWrapper>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -30,9 +29,6 @@ export default function RootLayout({ children, session, ...pageProps }) {
             <ToastContainer />
             {children}
           </ThemeProvider>
-        </SessionWrapper>
-
-
       </body>
     </html>
 

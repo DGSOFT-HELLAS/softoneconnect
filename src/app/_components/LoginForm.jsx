@@ -1,5 +1,4 @@
 "use client"
-import { useSession, signIn, signOut } from "next-auth/react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Lock } from 'lucide-react';
@@ -45,7 +44,7 @@ export default function LoginForm() {
     const onSubmit = async (data) => {
        
         try {
-            let res = await fetch('http://localhost:4000/auth/login', {
+            let res = await fetch('http://localhost:3000/auth', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -58,8 +57,7 @@ export default function LoginForm() {
               })
                let json = await res.json()
             console.log(json)
-
-            
+         
 
         } catch (error) {
             console.log('error')
