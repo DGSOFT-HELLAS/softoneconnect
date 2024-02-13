@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { Eye, EyeOff } from 'lucide-react';
+import axios from "axios"
+import { Crimson_Pro } from "next/font/google"
 
 const FormSchema = z.object({
     username: z.string().min(2, {
@@ -33,39 +35,24 @@ export default function RegisterForm() {
         },
     })
 
-    function onSubmit(data) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        })
+    async function onSubmit(data) {
+        console.log('yes')
+        const res = await axios.post("http:localhost:4000/test");
+        console.log(res.data)
+
     }
 
     return (
-                   <Form {...form} >
+        <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid gap-4">
+               
                 <FormField
                     control={form.control}
                     name="username"
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input placeholder="email" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormControl>
-                                <Input placeholder="full name" {...field} />
+                                <Input placeholder="email" type="email" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -91,6 +78,8 @@ export default function RegisterForm() {
                 <Button type="submit">Submit</Button>
             </form>
         </Form>
-       
+
     )
 }
+
+
