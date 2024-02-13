@@ -38,7 +38,7 @@ export default function RegisterForm() {
     async function onSubmit(data) {
         let url = "http://localhost:4000/api/test"
         let url2 = "http://crm.cctracking.gr/api/test"
-        console.log(url)s
+        console.log(url)
         console.log(url2)
         const res = await axios.post(url);
         const res2 = await axios.post(url2);
