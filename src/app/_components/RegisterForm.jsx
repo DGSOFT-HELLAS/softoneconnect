@@ -37,7 +37,7 @@ export default function RegisterForm() {
 
     async function onSubmit(data) {
         console.log('yes')
-        const res = await axios.post("http:localhost:4000/test");
+        const res = await axios.post("http:localhost:4000/api/test");
         console.log(res.data)
 
     }

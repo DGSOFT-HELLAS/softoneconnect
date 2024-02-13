@@ -1,0 +1,83 @@
+[33mcommit cf1445eded338d45a223108c29b0437d9f856c3c[m[33m ([m[1;36mHEAD -> [m[1;32mcalendar[m[33m, [m[1;31morigin/calendar[m[33m)[m
+Author: Genral Lee <dev@vmi1174119.contaboserver.net>
+Date:   Tue Feb 13 10:28:16 2024 +0200
+
+    missing deps
+
+[33mcommit b527d6a21877247cb85ba82fb23bb7e80a6f7841[m
+Author: Genral Lee <dev@vmi1174119.contaboserver.net>
+Date:   Tue Feb 13 10:24:15 2024 +0200
+
+    try: unescpaed characters
+
+[33mcommit e6496fedf6166ed8a4d70e634a67333ae890d768[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Thu Feb 8 14:59:53 2024 +0200
+
+    calendar locale
+
+[33mcommit ada119c8dcd75200d5778881830594b42ff4ebdb[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Mon Feb 5 15:46:41 2024 +0200
+
+    testing next auth
+
+[33mcommit 41ad6865309d769d08be4b53ff2a134614f8c516[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Thu Feb 1 15:59:16 2024 +0200
+
+    ui: error template
+
+[33mcommit ca284031f4a41c3502ac5629c92aef6886051c98[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 17:05:44 2024 +0200
+
+    ui: main layout ready
+
+[33mcommit 87a3bf0c7e4fa0ead772eefa8a3c135db8684eb9[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 16:50:43 2024 +0200
+
+    ui: complete sidebar
+
+[33mcommit e4e3d49f02b577418361007bdcea773b20c55bd1[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 16:04:45 2024 +0200
+
+    minor folder refactoring
+
+[33mcommit fa646356f08ad3c61d75776e1b39783b964ba512[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 15:44:55 2024 +0200
+
+    ui: styling
+
+[33mcommit bd4b8041496b97e4c44e7a76156cf1f243dcd056[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 14:18:56 2024 +0200
+
+    ui: custom scrollbar
+
+[33mcommit 18c1309d51461067ee2b60c1f48004228e948c5d[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 14:13:40 2024 +0200
+
+    ui: layout almost done
+
+[33mcommit 83ff04366adeb2941f572bb0c2d931078b5c1ead[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Wed Jan 31 12:29:43 2024 +0200
+
+    ui: dashboard layout
+
+[33mcommit fc0003877440076c7cb01abb5fedf9ca86128187[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Mon Jan 29 16:29:22 2024 +0200
+
+    first commit
+
+[33mcommit 439e08bbb95ad9c0071835ba4f56f26d0a88ddc0[m
+Author: giannischiout <giannis.chiout@gmail.com>
+Date:   Mon Jan 29 13:50:47 2024 +0200
+
+    Initial commit from Create Next App
