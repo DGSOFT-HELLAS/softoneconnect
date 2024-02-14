@@ -46,7 +46,10 @@ export default function RegisterForm() {
     async function onSubmit(data) {
         console.log(data)
         try {
-            const resp = await axios.post('/api/auth')
+            const resp = await axios.post('/api/auth', {
+                email: data.email,
+                password: data.password
+            })
             console.log(resp.data)
         } catch (e) {
             
