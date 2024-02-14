@@ -26,7 +26,7 @@ export default function RegisterForm() {
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            username: "",
+            email: "",
         },
     })
 
