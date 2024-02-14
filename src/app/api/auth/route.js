@@ -1,13 +1,15 @@
+import { MdOutlineWifiPassword } from 'react-icons/md';
 import User from '../../../../server/models/User'
 import connectMongo from '../../../../server/models/config';
-export async function POST(req, res) {
+export async function POST(req) {
     
-    const {email, password} = req.body;
-
-    console.log(email, password )
+    const {email, password} = await req.json();
+    console.log(email, password)
     let user;
     try {
+        console.log('1')
         await connectMongo()
+        console.log('2')
         user = await User.create({
             email: email,
             password: password
@@ -16,7 +18,8 @@ export async function POST(req, res) {
         console.log(user)
        
     } catch (e) {
-        throw new Error('something went wrong. User was not created')
+        console.log(e)
+        throw new Error(e)
     }
     return Response.json({
         user: user
