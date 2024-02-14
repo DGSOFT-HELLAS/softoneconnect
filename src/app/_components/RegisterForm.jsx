@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from 'lucide-react';
+import axios from 'axios'
 
 const FormSchema = z.object({
-    username: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
+    email: z.string().min(2, {
+        message: "This is not a valid email",
     }),
 })
 
@@ -30,7 +31,13 @@ export default function RegisterForm() {
     })
 
     async function onSubmit(data) {
-        console.log('submit')
+        console.log(data)
+        try {
+            const resp = await axios.post('/api/auth')
+            console.log(resp.data)
+        } catch (e) {
+            console.log(e)
+        }
 
     }
 
