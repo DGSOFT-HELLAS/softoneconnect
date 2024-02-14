@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -16,19 +16,32 @@ import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios'
 
 const FormSchema = z.object({
-    email: z.string().min(2, {
-        message: "This is not a valid email",
-    }),
+   email: z.string().email({
+         message: "Invalid email address",
+   }),
+    password: z.string().min(6, {
+        message: "Password must be at least 6 characters long",
+    })
 })
 
 export default function RegisterForm() {
     const [inputType, setInputType] = useState('password');
+    const [error, setError] = useState();
+
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             email: "",
+            password: "",
         },
     })
+
+    useEffect(() => {
+        console.log('error', error)
+        if(error) {
+            throw new Error(error)
+        }
+    }, [error])
 
     async function onSubmit(data) {
         console.log(data)
@@ -36,7 +49,8 @@ export default function RegisterForm() {
             const resp = await axios.post('/api/auth')
             console.log(resp.data)
         } catch (e) {
-            console.log(e)
+            
+            setError(e)
         }
 
     }
@@ -44,14 +58,13 @@ export default function RegisterForm() {
     return (
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid gap-4">
-               
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="email"
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input placeholder="email" type="email" {...field} />
+                                <Input  placeholder="email" type="email" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -60,7 +73,6 @@ export default function RegisterForm() {
                 <FormField
                     control={form.control}
                     name="password"
-
                     render={({ field }) => (
                         <FormItem className="password_input">
                             <FormControl>
@@ -71,6 +83,7 @@ export default function RegisterForm() {
                             ) : (
                                 <Eye className="password_icon" onClick={() => setInputType('password')} />
                             )}
+                                                        <FormMessage />
                         </FormItem>
                     )}
                 />

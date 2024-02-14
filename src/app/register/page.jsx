@@ -10,6 +10,9 @@ export const metadata = {
     description: "Authentication forms built using the components.",
 }
 
+
+
+
 export default function AuthenticationPage() {
     return (
         <div className="auth_container">
@@ -18,7 +21,7 @@ export default function AuthenticationPage() {
                     <h1>Create an account</h1>
                     <p>Enter your email below to create your account</p>
                 </div>
-                <RegisterForm />
+                <RegisterForm  />
                 <div className="register_divider">
                     <span className="divider_line"></span>
                     <span className="divider_text">or sign up with</span>

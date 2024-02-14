@@ -1,10 +1,12 @@
 import User from '../../../../server/models/User'
-
-export async function POST() {
+import connectMongo from '../../../../server/models/config';
+export async function POST(req, res) {
     
     const {email, password} = req.body;
+    console.log(email, password )
     let user;
     try {
+        await connectMongo()
         user = User.create({
             email: email,
             password: password
