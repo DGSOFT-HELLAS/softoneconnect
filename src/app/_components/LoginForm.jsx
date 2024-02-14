@@ -1,5 +1,4 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Lock } from 'lucide-react';
 import { useForm } from "react-hook-form"
@@ -19,7 +18,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { CheckboxWithText } from "./InputCheck";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const FormSchema = z.object({
     email: z.string()
@@ -41,30 +41,21 @@ export default function LoginForm() {
     })
 
  
-    const onSubmit = async (data) => {
        
-        try {
-            let res = await fetch('http://localhost:3000/auth', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                credentials: 'include', // Include credentials (cookies) in the request
-                body: JSON.stringify({
-                    email: "giannis.chiout@gmail.com",
-                    password: "1234c"
-                }),
-              })
-               let json = await res.json()
-            console.log(json)
-         
-
-        } catch (error) {
-            console.log('error')
-            console.log(error)
-            throw new Error('this is a very bad nasty error')
+        async function onSubmit(data) {
+            console.log('data')
+            try {
+                const resp = await axios.get(`/api/auth?pass=${data.password}&email=${data.email}`)
+                if(!resp.data.user) {
+                    toast.error(resp.data.message)
+                    return;
+                } 
+                router.push('/dashboard')
+            } catch (e) {
+                throw new Error('Oups! something unexpected happened')
+            }
+    
         }
-    }
 
     return (
         <Form {...form} >
@@ -108,7 +99,7 @@ export default function LoginForm() {
                     Login
                 </Button>
                 <div className="go_back_link">
-                <Link href="/auth/register">New here? Register now!</Link>
+                <Link href="/register">New here? Register now!</Link>
                 </div>
             </form>
         </Form>

@@ -4,18 +4,14 @@ import connectMongo from '../../../../server/models/config';
 export async function POST(req) {
     
     const {email, password} = await req.json();
-    console.log(email, password)
     let user;
     try {
-        console.log('1')
         await connectMongo()
-        console.log('2')
         user = await User.create({
             email: email,
             password: password
         })
-        console.log('user')
-        console.log(user)
+     
        
     } catch (e) {
         console.log(e)
@@ -25,3 +21,46 @@ export async function POST(req) {
         user: user
     })
   }
+
+
+export async function GET(req) {
+    console.log('login api')
+    const url = new URL(req.url)
+
+    const pass = url.searchParams.get("pass")
+    console.log('pass')
+    console.log(pass)
+    const email = url.searchParams.get("email")
+    let response = {
+        user: null,
+        message: null,
+    }
+    try {
+        await connectMongo()
+        response.user = await User.findOne({email: email})
+        let _dbpassword = response.user.password;
+
+        if(_dbpassword !== pass) {
+            response.message = "Wrong credentials"
+            response.user = null;
+        } 
+        else if(!response.user) {
+            response.message = "User not found. Try again"
+            response.user = null;
+        } else {
+            response.message = "Succesfull login"
+        }
+       
+        
+
+        
+       
+       
+
+       
+    } catch (e) {
+        console.log(e)
+        throw new Error(e)
+    }
+    return Response.json(response)
+}   

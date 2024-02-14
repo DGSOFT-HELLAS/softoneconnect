@@ -1,7 +1,8 @@
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
-import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from 'react-toastify';
+
 
 
 

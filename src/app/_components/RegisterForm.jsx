@@ -16,9 +16,9 @@ import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios'
 
 const FormSchema = z.object({
-   email: z.string().email({
-         message: "Invalid email address",
-   }),
+    email: z.string().email({
+        message: "Invalid email address",
+    }),
     password: z.string().min(6, {
         message: "Password must be at least 6 characters long",
     })
@@ -38,7 +38,7 @@ export default function RegisterForm() {
 
     useEffect(() => {
         console.log('error', error)
-        if(error) {
+        if (error) {
             throw new Error(error)
         }
     }, [error])
@@ -59,14 +59,14 @@ export default function RegisterForm() {
 
     return (
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid gap-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                 <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input  placeholder="email" type="email" {...field} />
+                                <Input placeholder="email" type="email" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -85,7 +85,7 @@ export default function RegisterForm() {
                             ) : (
                                 <Eye className="password_icon" onClick={() => setInputType('password')} />
                             )}
-                                                        <FormMessage />
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
