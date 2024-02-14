@@ -50,7 +50,6 @@ export default function RegisterForm() {
             console.log(resp.data)
         } catch (e) {
             
-            setError(e)
         }
 
     }

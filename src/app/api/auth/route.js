@@ -11,6 +11,8 @@ export async function POST(req, res) {
             email: email,
             password: password
         })
+        console.log('user')
+        console.log(user)
     } catch (e) {
         throw new Error('something went wrong. User was not created')
     }
