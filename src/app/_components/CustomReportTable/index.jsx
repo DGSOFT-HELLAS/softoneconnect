@@ -171,11 +171,9 @@ export default function CustomReport() {
                     };
                 });
         
-                console.log('result array')
-                console.log(resultArray)
+             
                 setNewData(resultArray)
             }, [baseValue, secondValue])
-    console.log(userData)
     return (
         <div>
 

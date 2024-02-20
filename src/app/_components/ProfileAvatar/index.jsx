@@ -13,11 +13,11 @@ import {
   DropdownMenuShortcut
 } from "@/components/ui/dropdown-menu"
 import { FaAngleDown } from "react-icons/fa";
-import { logout } from '@/utils/functions'
-
-
+import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 const ProfileAvatar = () => {
   const [show, setShow] = useState(false);
+  const router = useRouter();
   const firstName = 'giannis';
   const lastName = 'katsaros';
   const role = "admin"
@@ -56,23 +56,20 @@ const ProfileAvatar = () => {
       <DropdownMenuGroup>
         <DropdownMenuItem>
           Profile
-          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem>
           Settings
-          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
-        <Button
-          variant="ghost"
-          onClick={logout}
-        >
-
-        </Button>
-        
-        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+      <DropdownMenuItem onClick={() => {
+    signOut({ redirect: false }).then(() => {
+        router.push("/login"); // Redirect to the dashboard page after signing out
+    });
+}}>
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

@@ -22,15 +22,6 @@ export default function AuthenticationPage() {
                     <p>Enter your email below to create your account</p>
                 </div>
                 <RegisterForm  />
-                <div className="register_divider">
-                    <span className="divider_line"></span>
-                    <span className="divider_text">or sign up with</span>
-                    <span className="divider_line"></span>
-                </div>
-                <Button className="google_button "  variant="outline" color="white">
-                    <FcGoogle className="google_icon" />    
-                    Sign up with Google
-                </Button>
             </div>
         </div>
     )

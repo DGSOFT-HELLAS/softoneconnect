@@ -20,6 +20,9 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react"
 import { toast } from 'react-toastify';
+import { ReloadIcon } from "@radix-ui/react-icons"
+
+
 
 
 const FormSchema = z.object({
@@ -27,13 +30,16 @@ const FormSchema = z.object({
         .min(1, { message: "This field has to be filled." })
         .email("This is not a valid email."),
     password: z.string()
-    .min(5, {message: "Password must be at least 5 characters."})
+        .min(5, { message: "Password must be at least 5 characters." })
 })
 
 
 export default function LoginForm() {
     const { data: session, status } = useSession()
-
+    const [state, setState] = useState({
+        loading: false,
+        disabled: false,
+    });
     const [inputType, setInputType] = useState('password');
     const router = useRouter();
     const form = useForm({
@@ -44,25 +50,26 @@ export default function LoginForm() {
         },
     })
 
-    console.log('session client')
-    console.log(session)
- 
-       
-        async function onSubmit(data) {
-          
-            const resp = await signIn('credentials', {
-                email: data.email,
-                password: data.password,
-                redirect: false,
-            })
-            console.log('resp')
-            if(resp.status !== 200) {
-                toast.error("Error Notification !");
-                return;
-            }
-                router.push('/dashboard')
-    
+
+
+
+    async function onSubmit(data) {
+        setState(prev => ({ ...prev, loading: true, disabled: true }))
+        const resp = await signIn('credentials', {
+            email: data.email,
+            password: data.password,
+            redirect: false,
+        })
+        console.log('resp')
+        if (resp.status !== 200) {
+            toast.error("Error Notification !");
+            setState(prev => ({ ...prev, loading: false, disabled: false }))
+            return;
         }
+        setState(prev => ({ ...prev, loading: false, disabled: false }))
+        router.push('/dashboard/tickets')
+
+    }
 
     return (
         <Form {...form} >
@@ -101,12 +108,12 @@ export default function LoginForm() {
                     <CheckboxWithText label="keep me signed in" />
                     <span className=" text-sm">Forgot password?</span>
                 </div>
-                <Button type="submit">
-                    <Lock className="button_icon" />
+                <Button disabled={state.disabled}>
+                    {state.loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                     Login
                 </Button>
                 <div className="go_back_link">
-                <Link href="/register">New here? Register now!</Link>
+                    <Link href="/register">New here? Register now!</Link>
                 </div>
             </form>
         </Form>

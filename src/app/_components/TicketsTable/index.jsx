@@ -34,7 +34,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
+import { useSession } from "next-auth/react"
 
 export const columns = [
     {
@@ -126,10 +126,11 @@ export const columns = [
 ]
 
 export function TicketsTable({ data }) {
-    console.log(data)
     const [columnVisibility, setColumnVisibility] = React.useState({})
     const [rowSelection, setRowSelection] = React.useState({})
-
+    const {data: session} = useSession()
+    console.log('session')
+    console.log(session)
     const table = useReactTable({
         data,
         columns,
@@ -265,7 +266,6 @@ const TableComponent = ({ data, columns, table }) => {
 
 const Status = ({row}) => {
     let value = row.getValue("Κατάσταση")
-    console.log(value)
     let statusState;
     switch(value) {
         case "Προς Έναρξη":

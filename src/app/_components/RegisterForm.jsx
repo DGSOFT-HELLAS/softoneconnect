@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios'
+import { Sura } from "next/font/google"
 
 const FormSchema = z.object({
     email: z.string().email({
@@ -33,6 +34,8 @@ export default function RegisterForm() {
         defaultValues: {
             email: "",
             password: "",
+            name: "",
+            surname: "",
         },
     })
 
@@ -49,17 +52,15 @@ export default function RegisterForm() {
                 email: data.email,
                 password: data.password
             })
-            console.log(resp.data)
         } catch (e) {
-            console.log('e')
-            console.log(e)
+         
         }
 
     }
 
     return (
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
                 <FormField
                     control={form.control}
                     name="email"
@@ -74,11 +75,35 @@ export default function RegisterForm() {
                 />
                 <FormField
                     control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Input placeholder="name" type="text" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="surname"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Input placeholder="surname" type="text" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
                     name="password"
                     render={({ field }) => (
                         <FormItem className="password_input">
                             <FormControl>
-                                <Input type={inputType} placeholder="password" {...field} />
+                                <Input className="w-full" type={inputType} placeholder="password" {...field} />
                             </FormControl>
                             {inputType === 'password' ? (
                                 <EyeOff onClick={() => setInputType('text')} className="password_icon" />
@@ -89,7 +114,7 @@ export default function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button className="w-full" type="submit">Submit</Button>
             </form>
         </Form>
 

@@ -1,8 +1,9 @@
 
 import { DataTableDemo } from "@/app/_components/TableExample";
 import { TicketsTable } from "@/app/_components/TicketsTable";
-import axios from "axios";
 import translateData from "@/utils/translateData";
+import { getSession } from "next-auth/react"
+
 const fetchTickets = async () => {
    
     const response = await fetch("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
@@ -18,6 +19,9 @@ const fetchTickets = async () => {
 }
 const Page = async () => {
     const data = await fetchTickets();
+    const session = await getSession()
+    console.log('fuckjing session')
+    console.log(session)
     return (
         <>
             <div className="mb-4">
