@@ -1,6 +1,4 @@
 import LoginForm from "@/app/_components/LoginForm";
-import { cookies } from 'next/headers'
-
 
 
 export const metadata = {

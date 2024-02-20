@@ -1,15 +1,17 @@
-import { MdOutlineWifiPassword } from 'react-icons/md';
 import User from '../../../../server/models/User'
 import connectMongo from '../../../../server/models/config';
+import bcrypt from 'bcrypt';
 export async function POST(req) {
     
     const {email, password} = await req.json();
     let user;
+    let cryptedPassword = await bcrypt.hash(password, 10)
     try {
         await connectMongo()
         user = await User.create({
             email: email,
-            password: password
+            password: cryptedPassword,
+            role: 'user'
         })
      
        
@@ -50,11 +52,6 @@ export async function GET(req) {
         } else {
             response.message = "Succesfull login"
         }
-       
-        
-
-        
-       
        
 
        

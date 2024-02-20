@@ -4,11 +4,7 @@ import { TicketsTable } from "@/app/_components/TicketsTable";
 import axios from "axios";
 import translateData from "@/utils/translateData";
 const fetchTickets = async () => {
-    // const {data} = await axios.post("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // })
+   
     const response = await fetch("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
         method: 'POST',
         body: JSON.stringify({
@@ -22,7 +18,6 @@ const fetchTickets = async () => {
 }
 const Page = async () => {
     const data = await fetchTickets();
-    // console.log(JSON.parse(data.result))
     return (
         <>
             <div className="mb-4">

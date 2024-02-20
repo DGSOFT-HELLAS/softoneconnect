@@ -1,8 +1,8 @@
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from 'react-toastify';
-
+import {  ToastContainer } from 'react-toastify';
+import ClientSessionProvider from "./_components/ClientSessionProvider";
 
 
 
@@ -20,6 +20,7 @@ export default function RootLayout({ children, session, ...pageProps }) {
 
     <html suppressHydrationWarning lang="en">
       <body className={roboto.className}>
+        < ClientSessionProvider session={session} >
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -29,6 +30,7 @@ export default function RootLayout({ children, session, ...pageProps }) {
             <ToastContainer />
             {children}
           </ThemeProvider>
+        </ClientSessionProvider>
       </body>
     </html>
 

@@ -14,12 +14,13 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from 'lucide-react';
-
 import { CheckboxWithText } from "./InputCheck";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react"
+import { toast } from 'react-toastify';
+
 
 const FormSchema = z.object({
     email: z.string()
@@ -29,7 +30,10 @@ const FormSchema = z.object({
     .min(5, {message: "Password must be at least 5 characters."})
 })
 
+
 export default function LoginForm() {
+    const { data: session, status } = useSession()
+
     const [inputType, setInputType] = useState('password');
     const router = useRouter();
     const form = useForm({
@@ -40,20 +44,23 @@ export default function LoginForm() {
         },
     })
 
+    console.log('session client')
+    console.log(session)
  
        
         async function onSubmit(data) {
-            console.log('data')
-            try {
-                const resp = await axios.get(`/api/auth?pass=${data.password}&email=${data.email}`)
-                if(!resp.data.user) {
-                    toast.error(resp.data.message)
-                    return;
-                } 
-                router.push('/dashboard')
-            } catch (e) {
-                throw new Error('Oups! something unexpected happened')
+          
+            const resp = await signIn('credentials', {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+            })
+            console.log('resp')
+            if(resp.status !== 200) {
+                toast.error("Error Notification !");
+                return;
             }
+                router.push('/dashboard')
     
         }
 
