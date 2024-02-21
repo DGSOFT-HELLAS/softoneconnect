@@ -28,6 +28,9 @@ const ProfileAvatar = () => {
   const {data: session} = useSession();
   let initials = handleAvatarName(session?.name, session?.surname);
   console.log(session)
+  if(session === undefined || session === null) {
+    router.push('/login')
+  }
   return (
     <DropdownMenu>
     <DropdownMenuTrigger asChild>
