@@ -2,10 +2,12 @@
 import { DataTableDemo } from "@/app/_components/TableExample";
 import { TicketsTable } from "@/app/_components/TicketsTable";
 import translateData from "@/utils/translateData";
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth/next"
+import {authOptions} from '../../api/auth/[...nextauth]/route'
+import { redirect } from 'next/navigation'
+
 
 const fetchTickets = async () => {
-   
     const response = await fetch("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
         method: 'POST',
         body: JSON.stringify({
@@ -17,11 +19,17 @@ const fetchTickets = async () => {
     let _parseData = JSON.parse(_data.result)
     return _parseData;
 }
+
+
 const Page = async () => {
     const data = await fetchTickets();
-    const session = await getSession()
-    console.log('fuckjing session')
-    console.log(session)
+    const  session = await getServerSession(authOptions);
+    
+    if(!session) {
+        redirect('login')
+
+    }
+
     return (
         <>
             <div className="mb-4">
