@@ -16,3 +16,15 @@
 .statusToBe {
     background-color: #FF7E8D;
 }
+
+
+
+.ticketUnderline {
+    text-decoration: underline;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.stringifyText {
+    max-width: 400px;
+}

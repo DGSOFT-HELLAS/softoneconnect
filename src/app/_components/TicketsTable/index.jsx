@@ -1,5 +1,5 @@
 "use client"
-import * as React from "react"
+import React, {useEffect, useState} from "react"
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -9,7 +9,6 @@ import {
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal, SlidersHorizontal, ChevronRight, ChevronLeft } from "lucide-react"
@@ -25,7 +24,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -34,7 +32,17 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useSession } from "next-auth/react"
+import { useModalStore } from "@/store"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+    DialogClose
+  } from "@/components/ui/dialog"
 
 export const columns = [
     {
@@ -79,8 +87,7 @@ export const columns = [
     {
         accessorKey: "SOACTIONCODE",
         header: "SOACTIONCODE",
-        cell: ({ row }) => <div >{row.getValue("SOACTIONCODE")}</div>,
-
+        cell: ({ row }) => <Soaction row={row} />,
     },
     {
         accessorKey: "Χαρακτηρισμός",
@@ -92,8 +99,8 @@ export const columns = [
         header: "Κατάσταση",
         cell: ({ row }) => <Status row={row} />,
     },
-   
-   
+
+
     {
         id: "actions",
         enableHiding: false,
@@ -128,9 +135,6 @@ export const columns = [
 export function TicketsTable({ data }) {
     const [columnVisibility, setColumnVisibility] = React.useState({})
     const [rowSelection, setRowSelection] = React.useState({})
-    const {data: session} = useSession()
-    console.log('session')
-    console.log(session)
     const table = useReactTable({
         data,
         columns,
@@ -147,7 +151,6 @@ export function TicketsTable({ data }) {
 
     return (
         <div className="w-full rounded-md border p-8">
-
             <TableComponent data={data} columns={columns} table={table} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
@@ -170,6 +173,7 @@ export function TicketsTable({ data }) {
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
+                <EditDialog />
             </div>
         </div>
     )
@@ -263,25 +267,68 @@ const TableComponent = ({ data, columns, table }) => {
     )
 }
 
+const Soaction = ({ row }) => {
+    const setData = useModalStore((state) => state.setModalData)
+    const setModal = useModalStore((state) => state.setOpenEditModal)
 
-const Status = ({row}) => {
+    useEffect(() => {
+        setData(row.original)
+    }, [])
+    return (
+        <div >
+            <p className={styles.ticketUnderline} onClick={setModal} >{row.getValue("SOACTIONCODE")}</p>
+        </div>
+    )
+}
+
+const Status = ({ row }) => {
     let value = row.getValue("Κατάσταση")
     let statusState;
-    switch(value) {
+    switch (value) {
         case "Προς Έναρξη":
             statusState = styles.statusToBe
             break;
         case "Σε Εξέλιξη":
             statusState = styles.statusActive
             break;
-      
-    
+
+
     }
     return (
-            <div >
-                <span className={`${styles.status}  ${statusState}`}>
-                    {value}
-                </span>
-            </div>
+        <div >
+            <span className={`${styles.status}  ${statusState}`}>
+                {value}
+            </span>
+        </div>
+    )
+}
+
+
+const EditDialog = () => {
+    const modal = useModalStore((state) => state.openEditModal)
+    const setOpen = useModalStore((state) => state.setOpenEditModal)
+    const modalData = useModalStore((state) => state.modalData)
+
+    return (
+        <Dialog open={modal} onOpenChange={setOpen}>
+            <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle>Info</DialogTitle>
+                    <DialogDescription>
+                        <p className={styles.stringifyText}>
+                        {JSON.stringify(modalData)}
+                        </p>
+                    </DialogDescription>
+                </DialogHeader>
+              
+                <DialogFooter className="sm:justify-start">
+                    <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                            Close
+                        </Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
