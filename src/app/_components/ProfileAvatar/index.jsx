@@ -15,18 +15,22 @@ import {
 import { FaAngleDown } from "react-icons/fa";
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 const ProfileAvatar = () => {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const firstName = 'giannis';
   const lastName = 'katsaros';
   const role = "admin"
-  const handleAvatarName = () => {
+  const handleAvatarName = (firstName, lastName) => {
     if(firstName && lastName) {
       return firstName[0].toUpperCase() + lastName[0].toUpperCase()
     }
   }
-  let initials = handleAvatarName();
+
+  const {data: session} = useSession();
+  let initials = handleAvatarName(session?.name, session?.surname);
+  console.log(session)
   return (
     <DropdownMenu>
     <DropdownMenuTrigger asChild>
@@ -36,8 +40,8 @@ const ProfileAvatar = () => {
             </Button>
             <div className="avatar_details">
               <div>
-                <p className='text-sm font-medium leading-none'>{firstName} {lastName}</p>
-                <p className='text-xs leading-none text-muted-foreground'>{role}</p>
+                <p className='text-sm font-medium leading-none'>{session?.name} {session?.surname}</p>
+                <p className='text-xs leading-none text-muted-foreground'>{session?.role}</p>
               </div>
               <FaAngleDown className='text-muted-foreground ml-2'/>
             </div>

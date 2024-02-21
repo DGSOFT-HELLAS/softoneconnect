@@ -1,14 +1,17 @@
-import User from '../../../../server/models/User'
-import connectMongo from '../../../../server/models/config';
+import connectMongo from '../../../../../server/models/config';
 import bcrypt from 'bcrypt';
+import User from '../../../../../server/models/User';
+
 export async function POST(req) {
     
     const {email, password, name, surname} = await req.json();
     console.log(email, name, surname)
     let cryptedPassword = await bcrypt.hash(password, 10)
+    console.log(cryptedPassword)
     try {
         await connectMongo()
-        const searchEmail = await User.find({email: email})
+        const searchEmail = await User.findOne({email: email})
+        console.log(searchEmail)
         if(searchEmail) {
             return Response.json({
                 success: false,
@@ -23,8 +26,7 @@ export async function POST(req) {
             surname: surname,
             role: 'user'
         })
-        console.log('user')
-        console.log(user)
+       
         return Response.json({
             success: true,
             message: "User created",

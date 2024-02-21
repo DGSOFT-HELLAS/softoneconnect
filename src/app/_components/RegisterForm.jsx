@@ -14,12 +14,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios'
-import { Sura } from "next/font/google"
-
+import { toast } from 'react-toastify';
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { redirect } from "next/dist/server/api-utils"
+import { useRouter } from "next/navigation"
 const FormSchema = z.object({
     email: z.string().email({
         message: "Invalid email address",
     }),
+    name: z.string().min(1, { message: "First Name is required" }),
+    surname: z.string().min(1, { message: "Last Name is required" }),
     password: z.string().min(6, {
         message: "Password must be at least 6 characters long",
     })
@@ -27,7 +31,11 @@ const FormSchema = z.object({
 
 export default function RegisterForm() {
     const [inputType, setInputType] = useState('password');
-    const [error, setError] = useState();
+    const router = useRouter()
+    const [state, setState] = useState({
+        loading: false,
+        disabled: false,
+    })
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -39,21 +47,29 @@ export default function RegisterForm() {
         },
     })
 
-    useEffect(() => {
-        console.log('error', error)
-        if (error) {
-            throw new Error(error)
-        }
-    }, [error])
+    
 
     async function onSubmit(data) {
+        console.log(data)
+        setState(prev => ({...prev, loading: true, disabled: true}))
         try {
-            const resp = await axios.post('/api/auth', {
+            const resp = await axios.post('/api/auth/register', {
                 email: data.email,
-                password: data.password
+                password: data.password,
+                name: data.name,
+                surname: data.surname
             })
+            console.log(resp)
+            setState(prev => ({...prev, loading: false, disabled: false}))
+
+            if(resp.data.success) {
+                toast.success(resp.data.message);
+                router.push('/login')
+            } else {
+                toast.error(resp.data.message);
+            }
         } catch (e) {
-         
+            console.log(e)
         }
 
     }
@@ -61,18 +77,7 @@ export default function RegisterForm() {
     return (
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormControl>
-                                <Input placeholder="email" type="email" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+             
                 <FormField
                     control={form.control}
                     name="name"
@@ -97,6 +102,18 @@ export default function RegisterForm() {
                         </FormItem>
                     )}
                 />
+                   <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Input placeholder="email" type="email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="password"
@@ -114,7 +131,10 @@ export default function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <Button className="w-full" type="submit">Submit</Button>
+                 <Button className="w-full" disabled={state.disabled}>
+                    {state.loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+                    Submit
+                </Button>
             </form>
         </Form>
 
