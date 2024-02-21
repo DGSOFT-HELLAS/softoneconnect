@@ -24,9 +24,9 @@ const fetchTickets = async () => {
 const Page = async () => {
     const data = await fetchTickets();
     const  session = await getServerSession(authOptions);
-    
+    console.log(session)
     if(!session) {
-        redirect('login')
+        redirect('/login')
 
     }
 
