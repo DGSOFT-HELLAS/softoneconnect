@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.css'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -28,9 +28,11 @@ const ProfileAvatar = () => {
   const {data: session} = useSession();
   let initials = handleAvatarName(session?.name, session?.surname);
   console.log(session)
-  if(session === undefined || session === null) {
-    router.push('/login')
-  }
+  useEffect(() => {
+    if(session === undefined || session === null) {
+      router.push('/login')
+    }
+  }, [])
   return (
     <DropdownMenu>
     <DropdownMenuTrigger asChild>
