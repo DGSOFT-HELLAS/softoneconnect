@@ -3,7 +3,7 @@ import { DataTableDemo } from "@/app/_components/TableExample";
 import { TicketsTable } from "@/app/_components/TicketsTable";
 import translateData from "@/utils/translateData";
 import { getServerSession } from "next-auth/next"
-import {authOptions} from '../../api/auth/[...nextauth]/route'
+import {authOptions} from '../../api/auth/[...nextauth]/route.js'
 import { redirect } from 'next/navigation'
 
 
