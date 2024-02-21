@@ -5,7 +5,8 @@ import User from '../../../../../server/models/User';
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const handler = NextAuth({
+
+const authOptions = {
   session: {
     strategy: 'jwt',
   },
@@ -73,6 +74,7 @@ const handler = NextAuth({
       return session;
     },
   },
-});
+}
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
