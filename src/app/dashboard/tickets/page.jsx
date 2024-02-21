@@ -3,10 +3,8 @@ import { DataTableDemo } from "@/app/_components/TableExample";
 import { TicketsTable } from "@/app/_components/TicketsTable";
 import translateData from "@/utils/translateData";
 import { getServerSession } from "next-auth/next"
-import {authOptions} from '../../api/auth/[...nextauth]/route.js'
 import { redirect } from 'next/navigation'
-
-
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 const fetchTickets = async () => {
     const response = await fetch("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
         method: 'POST',

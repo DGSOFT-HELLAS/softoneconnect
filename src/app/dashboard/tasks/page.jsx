@@ -1,12 +1,9 @@
 
 import { DataTableDemo } from "@/app/_components/TableExample";
-import { getSession } from "next-auth/client"
 
 const Page = async () => {
 
-    const session = await getSession()
-    console.log(session)
-
+  
     return (
         <>
             <div className="mb-4">

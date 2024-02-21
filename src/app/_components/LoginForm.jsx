@@ -55,19 +55,24 @@ export default function LoginForm() {
 
     async function onSubmit(data) {
         setState(prev => ({ ...prev, loading: true, disabled: true }))
-        const resp = await signIn('credentials', {
-            email: data.email,
-            password: data.password,
-            redirect: false,
-        })
-        console.log('resp')
-        if (resp.status !== 200) {
-            toast.error("Error Notification !");
+        try {
+            const resp = await signIn('credentials', {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+            })
+            console.log('resp')
+            if (resp.status !== 200) {
+                toast.error("Error Notification !");
+                setState(prev => ({ ...prev, loading: false, disabled: false }))
+                return;
+            }
             setState(prev => ({ ...prev, loading: false, disabled: false }))
-            return;
+            router.push('/dashboard/tickets')
+        }catch (e) {
+            console.log(e)
         }
-        setState(prev => ({ ...prev, loading: false, disabled: false }))
-        router.push('/dashboard/tickets')
+       
 
     }
 
