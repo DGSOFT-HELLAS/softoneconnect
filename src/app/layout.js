@@ -16,8 +16,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children, session, ...pageProps }) {
-  return (
 
+  console.log(session, 'session')
+  return (
     <html suppressHydrationWarning lang="en">
       <body className={roboto.className}>
         < ClientSessionProvider session={session} >

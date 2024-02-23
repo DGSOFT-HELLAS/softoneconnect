@@ -1,15 +1,15 @@
 import CustomReport from "../_components/CustomReportTable"
 import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
+import AuthComponent from "../_components/AuthComponent";
 export default async function Page() {
-    // const  session = await getServerSession(authOptions);
-    // console.log(session)
-    // if(!session) {
-    //     redirect('/login')
-
-    // }
+    const  session = await getServerSession(authOptions);
+   
+    if(!session) {
+        return (
+            <AuthComponent redirectTo="/login" />
+        )
+    }
     return (
         <div>
             <CustomReport />

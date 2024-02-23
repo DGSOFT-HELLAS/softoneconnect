@@ -35,7 +35,6 @@ const FormSchema = z.object({
 
 
 export default function LoginForm() {
-    const { data: session, status } = useSession()
     const [state, setState] = useState({
         loading: false,
         disabled: false,
