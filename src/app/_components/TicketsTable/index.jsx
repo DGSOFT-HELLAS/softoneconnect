@@ -1,10 +1,7 @@
 "use client"
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import {
-    ColumnDef,
-    ColumnFiltersState,
-    SortingState,
-    VisibilityState,
+
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
@@ -42,11 +39,13 @@ import {
     DialogTrigger,
     DialogFooter,
     DialogClose
-  } from "@/components/ui/dialog"
+} from "@/components/ui/dialog"
+import { max } from "lodash"
 
 export const columns = [
     {
         id: "select",
+        enableResizing: false,
         header: ({ table }) => (
             <Checkbox
                 checked={
@@ -59,6 +58,7 @@ export const columns = [
         ),
         cell: ({ row }) => (
             <Checkbox
+                className="mr-6"
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
                 aria-label="Select row"
@@ -150,7 +150,7 @@ export function TicketsTable({ data }) {
     })
 
     return (
-        <div className="w-full rounded-md border p-8">
+        <div className="w-full rounded-md p-8 bg-background shadow">
             <TableComponent data={data} columns={columns} table={table} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
@@ -181,7 +181,6 @@ export function TicketsTable({ data }) {
 
 
 const TableComponent = ({ data, columns, table }) => {
-
 
     return (
         <div className="">
@@ -241,12 +240,13 @@ const TableComponent = ({ data, columns, table }) => {
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell, index, array) => (
-                                        <TableCell className={index !== array.length - 1 ? "border-r" : ""} key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
+                                            <TableCell
+                                                className={index !== array.length - 1 ? "border-r" : ""} key={cell.id}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </TableCell>
                                     ))}
                                 </TableRow>
                             ))
@@ -316,11 +316,11 @@ const EditDialog = () => {
                     <DialogTitle>Info</DialogTitle>
                     <DialogDescription>
                         <p className={styles.stringifyText}>
-                        {JSON.stringify(modalData)}
+                            {JSON.stringify(modalData)}
                         </p>
                     </DialogDescription>
                 </DialogHeader>
-              
+
                 <DialogFooter className="sm:justify-start">
                     <DialogClose asChild>
                         <Button type="button" variant="secondary">

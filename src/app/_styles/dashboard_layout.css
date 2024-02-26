@@ -9,7 +9,7 @@
 
 .logo_start {
     color: var(--foreground);
-    
+
 }
 .logo_end {
     color: var(--muted-foreground);
@@ -44,7 +44,6 @@
 }
 
 .sidebar {
-    border-right: 1px solid var(--border);
     position: sticky;
     display: flex;
     align-items: space-between;
@@ -57,10 +56,10 @@
 
 .main {
     overflow-y: scroll;
-    padding: 50px;
+    padding: 100px;
     height: calc(100vh - 60px);
+    background-color: var(--background-main);
 }
-
 .nav_buttons {
     display: flex;
     align-items: center;
@@ -70,23 +69,6 @@
 }
 
 
-.avatar_container {
-    display: flex;
-    align-items: center;
-    column-gap: 8px;
-
-}
-.avatar_text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-
-}
-
-.avatar_text span {
-    font-size: var(--font-xs);
-    color: var(--muted-foreground);
-}
 
 
 .toggle_theme {

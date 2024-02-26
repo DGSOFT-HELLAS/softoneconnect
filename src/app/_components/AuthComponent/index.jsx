@@ -1,8 +1,11 @@
+'use client'
+import { useSession } from 'next-auth/react';
 import {redirect} from 'next/navigation'
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
+
 const AuthComponent = async ({redirectTo}) => {
-    const  session = await getServerSession(authOptions);
+    const {data: session} = useSession()
+    console.log('session in auth component: ')
+    console.log(session)
     if(!session) {
         redirect(redirectTo)
     }

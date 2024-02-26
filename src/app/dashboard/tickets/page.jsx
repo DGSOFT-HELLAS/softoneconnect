@@ -21,8 +21,7 @@ const fetchTickets = async () => {
 const Page = async () => {
     const data = await fetchTickets();
     const  session = await getServerSession(authOptions);
-    console.log('thing is here we should be able to see the session')
-    console.log(session)
+    
    
     if(!session) {
         console.log('no session')

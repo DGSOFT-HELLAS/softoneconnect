@@ -18,9 +18,10 @@ export const metadata = {
 export default function RootLayout({ children, session, ...pageProps }) {
  
   return (
+    < ClientSessionProvider  >
     <html suppressHydrationWarning lang="en">
       <body className={roboto.className}>
-        < ClientSessionProvider session={pageProps.session} >
+       
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -30,9 +31,10 @@ export default function RootLayout({ children, session, ...pageProps }) {
             <ToastContainer />
             {children}
           </ThemeProvider>
-        </ClientSessionProvider>
       </body>
     </html>
+    </ClientSessionProvider>
+
 
   );
 }
