@@ -26,8 +26,8 @@ export const authOptions = {
             const user = await User.findOne({ email: credentials.email })
             if (user === null) return;
   
-            console.log('user fetched')
-            console.log(user)
+            // console.log('user fetched')
+            // console.log(user)
             let password = user.password
             const match = await compare(credentials.password, password)
   
