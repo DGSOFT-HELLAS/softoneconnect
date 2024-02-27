@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import BarChart from "@/app/_components/BarChart";
 import Image from 'next/image';
-
+import TicketsPieChart from "@/app/_components/TicketsPieChart/PieChart";
 const images = [
     'avatar1.jpg', 
     'avatar1.jpg', 
@@ -40,6 +40,28 @@ function countTickets(tickets) {
 }
 
 
+function categorizeClasses(tickets) {
+    const classCounts = [];
+
+    tickets.forEach(ticket => {
+        // Get the agent name
+        const classification = ticket['Χαρακτηρισμός'];
+        console.log('classification')
+        console.log(classification)
+      
+        const index = classCounts.findIndex(item => item['Χαρακτηρισμός'] == classification);
+        console.log('index')
+        console.log(index)
+      
+        if (index === -1) {
+            classCounts.push({ 'Χαρακτηρισμός': classification, total: 1});
+        } else {
+          classCounts[index].total++;
+        }
+      });
+      return classCounts;
+}
+
 const fetchTickets = async () => {
     const response = await fetch("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
         method: 'POST',
@@ -56,10 +78,13 @@ const fetchTickets = async () => {
 
 const Page = async () => {
     const data = await fetchTickets();
-    console.log(data)
+    // console.log(data)
     const session = await getServerSession(authOptions);
 
     const ticketData = countTickets(data);
+    const classifications = categorizeClasses(data);
+    console.log('classifications')
+    console.log(classifications)
 
     if (!session) {
         console.log('no session')
@@ -70,7 +95,7 @@ const Page = async () => {
         <>
             <div className="mb-4">
                 <h2 className="text-3xl font-bold">{"Welcome back!"}</h2>
-                <p className="text-muted-foreground">{"Here's some v and a list about Tickets!"}</p>
+                <p className="text-muted-foreground">{"Here's some visualization and a list about Tickets!"}</p>
             </div>
             <div className="mb-4 grid grid-cols-2 gap-4">
                 <div className="bg-background  radius-md">
@@ -84,10 +109,10 @@ const Page = async () => {
                
                 <div className="bg-background  radius-md">
                     <div className="mb-4 p-4 border-b text-muted-foreground border-background-main">
-                        <h2 className="text-lg font-bold ">{"Welcome back!"}</h2>
+                        <h2 className="text-lg">Ticketing Classification Data:</h2>
                     </div>
                     <div className="p-4 pb-0">
-                        <BarChart />
+                        <TicketsPieChart data={classifications}   />
                     </div>
                 </div>
                
