@@ -24,7 +24,7 @@ export default function RootLayout({ children, session, ...pageProps }) {
        
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
