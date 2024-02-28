@@ -4,7 +4,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 export default async function Home() {
 
-   
   const  session = await getServerSession(authOptions);
     if(!session) {
         redirect('/login')
@@ -14,4 +13,10 @@ export default async function Home() {
         redirect('/dashboard/tickets')
     }
  
+export default function Home() {
+  return (
+    <div>
+      hello my gorgeous friends  of the internet!!
+    </div>
+  );
 }
