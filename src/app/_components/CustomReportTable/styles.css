@@ -13,10 +13,10 @@
 }
 .data_container {
     width: 70%;
-    padding: 20px;
-    border: 1px solid rgb(240, 240, 240);
+    padding: 30px;
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: 0 0 10px rgb(240, 240, 240);
+    background-color: var(--background);
 
    
 }
