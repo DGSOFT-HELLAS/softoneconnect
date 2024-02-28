@@ -13,10 +13,4 @@ export default async function Home() {
         redirect('/dashboard/tickets')
     }
  
-export default function Home() {
-  return (
-    <div>
-      hello my gorgeous friends  of the internet!!
-    </div>
-  );
-}
+  }
