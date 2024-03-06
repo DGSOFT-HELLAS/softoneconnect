@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import elLocale from '@fullcalendar/core/locales/el';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -8,11 +8,36 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from "@fullcalendar/interaction" 
 import EditEvent from './editEvent'
 import AddEvent from './addEvent';
+import styles from './calendar.module.css'
+
+
+function addEventReducer(state, action) {
+  switch (action.type) {
+    case 'SET_ADD_EVENT':
+      return { ...state, addEvent: action.payload };
+    case 'SET_EVENT_DATE':
+      return { ...state, event: { ...state.event, date: action.payload } };
+    // Add other cases for different state transitions
+    default:
+      return state;
+  }
+}
+
+
 export default function RFullCalendar() {
+
+  
   const [state, setState] = useState({
     editEvent: false,
     addEvent: false,
-    date: null,
+    event: {
+      title: '',
+      start: '',
+      end: '',
+      extendedProps: {
+        description: ''
+      },
+    }
   })
   const [editModal, setEditModal] = useState(false);
   const [events, setEvents] = useState([
@@ -39,48 +64,30 @@ export default function RFullCalendar() {
 
   ]);
 
+  useEffect(() => {
+    console.log('state')
+    console.log(state)
+  }, [state])
+
   const handleOpenAddEvent = () => {
     setState(prev => ({...prev, addEvent:  false}))
 
   }
 
+ 
+  const handleEvent = (name, value) => {
+    setState(prev => ({...prev, event: {...prev.event, [name]: value}}))
+  }
 
-  useEffect(() => {
-    console.log(state)
-  }, [state])
 
 
-  const handleEventAdd = (event) => {
-    setState(prev => ({...prev, addEvent: true, date: event.dateStr}))
-    console.log(event)
-
-    
-    // const title = prompt('Enter event title:');
-    // if (!title) return; // User canceled
-
-    // const days = prompt('Enter number of days for the event:');
-    // if (!days || isNaN(days)) {
-    //   alert('Please enter a valid number of days.');
-    //   return;
-    // }
-
-    // const startDate = new Date(eventInfo.event.startStr);
-    // const endDate = new Date(startDate);
-    // endDate.setDate(startDate.getDate() + parseInt(days)); // Set the end date based on user input
-
-    // setEvents([
-    //   ...events,
-    //   {
-    //     title: title,
-    //     start: startDate,
-    //     end: endDate,
-    //   },
-    // ]);
-    
+  
+  const handleAdd = (event) => {
+    setState(prev => ({...prev, addEvent: true, event: {...prev.event, date: event.dateStr}}))
   };
 
 
-  const handleEventEdit = (info) => {
+  const handleEdit = (info) => {
     setEditModal(true);
     const calendarApi = info.view.calendar;
     const event = calendarApi.getEventById(info.event.id);
@@ -107,10 +114,10 @@ export default function RFullCalendar() {
     // }
   };
   return (
-    <>
+    <div className={styles.wrapper}>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin,]}
-        dateClick={(e) =>  handleEventAdd(e)}
+        dateClick={(e) =>  handleAdd(e)}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
@@ -119,14 +126,20 @@ export default function RFullCalendar() {
         events={events}
         initialView='dayGridMonth'
         editable={true}
-        eventClick={handleEventEdit}
+        eventClick={handleEdit}
         selectable={true}
         locale={elLocale}
 
       />
       <EditEvent open={state.editEvent} setOpen={setEditModal}   />
-      <AddEvent open={state.addEvent} setOpen={handleOpenAddEvent} setEvents={setEvents} selectedDate={state.date}  />
-    </>
+      <AddEvent 
+        open={state.addEvent} 
+        setOpen={handleOpenAddEvent} 
+        handleEvent={handleEvent}
+        event={state.event}
+        //Used for the calendar component to display the selected date from the calendar:
+        selectedDate={state.event.date}  />
+    </div>
   )
 }
 

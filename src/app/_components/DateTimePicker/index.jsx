@@ -13,8 +13,7 @@ import { el } from 'date-fns/locale';
 import { format } from "date-fns";
 
 
-export default function DateTime({ label, onChange, selectedDate }) {
-	const [date, setDate] = useState(new Date())
+export default function DateTime({ label, selectedDate, handleEvent }) {
 
 	const [state, setState] = useState({
 		hour: '12',
@@ -25,17 +24,20 @@ export default function DateTime({ label, onChange, selectedDate }) {
 
 	useEffect(() => {
 		setState(prev => ({ ...prev, startDate: selectedDate, endDate: selectedDate }))
+
 	}, [])
 
 
-	// const cleanTimeInputs = (e) => {
-	// 	if
-	// 	return;
-	// }
+
+	useEffect(() => {
+		console.log(state)
+	}, [state])
 
 	const handleIncreaseInterval = (interval, name, limit) => {
 		
 		setState(prev => {
+			
+			// If the value is already at the limit, return the previous state
 			if (parseInt(prev[name]) + interval > limit) {
 				return {
 					...prev
@@ -66,11 +68,14 @@ export default function DateTime({ label, onChange, selectedDate }) {
 	}
 
 
-	const handleChange = (e) => {
-		const name = e.target.name;
-		let value = e.target.value;
+	const handleChange = (e, limit) => {
+		let condition = e.target.value.length > 2 || e.target.value > limit || e.target.value < 0 ;
+		if(condition) return;
 
-		setState(prev => ({ ...prev, [name]: parseInt(value) }))
+		const name = e.target.name;
+		let value =  e.target.value ;
+		value = (parseInt(value) < 10 && parseInt(value) >= 5) ? `0${value}` : value
+		setState(prev => ({ ...prev, [name]:  value}))
 	}
 
 	const handleSelectDate = (e) => {
@@ -95,12 +100,13 @@ export default function DateTime({ label, onChange, selectedDate }) {
 							mode="single"
 							locale={el}
 							onSelect={handleSelectDate}
+							selected={new Date(state.date)}
 						/>
 					</PopoverContent>
 					{/* Single Input */}
 					<div className={styles.timeContainer}>
 						<div className={styles.timeInput}>
-							<input name="hour" onChange={handleChange} type="number" className={styles.timeSmallInput} value={state.hour} />
+							<input name="hour" onChange={(e) => handleChange(e, 24)} type="number" className={styles.timeSmallInput} value={state.hour} />
 							<div className={styles.arrows}>
 								<button onClick={() => handleIncreaseInterval(1, 'hour', 24)}>
 									<ChevronUp />
@@ -113,7 +119,7 @@ export default function DateTime({ label, onChange, selectedDate }) {
 						<span>:</span>
 						{/* Single Input For setting time */}
 						<div className={styles.timeInput}>
-							<input name="minutes" onChange={handleChange} type="text" className={styles.timeSmallInput} value={state.minutes} />
+							<input name="minutes" onChange={(e) => handleChange(e)} type="text" className={styles.timeSmallInput} value={state.minutes} />
 							<div className={styles.arrows}>
 								<button onClick={() => handleIncreaseInterval(5, 'minutes', 60)}>
 									<ChevronUp />
