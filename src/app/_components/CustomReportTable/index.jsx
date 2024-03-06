@@ -12,51 +12,97 @@ import {
 } from "@/components/ui/select"
 import './styles.css'
 
+
+
+
+
+const groupByFirstLevel = (items, secondValue) => {
+    return _.groupBy(items, secondValue);
+};
+
+const calculateSecondArray = (groupedByFirstLevel) => {
+    return Object.keys(groupedByFirstLevel).map(val => {
+        const itemsInDepartment = groupedByFirstLevel[val];
+        const totalWeight = _.sumBy(itemsInDepartment, 'weight');
+        return {
+            subRowName: val,
+            items: itemsInDepartment,
+            totalWeight: totalWeight,
+            count: itemsInDepartment.length
+        };
+    });
+};
+const calculateThirdArray = (groupedBy, thirdValue) => {
+    if(!thirdValue) return [];
+    let items = groupedBy[0].items;
+    let groupBy = _.groupBy(items, thirdValue )
+    console.log('items')
+    console.log(items);
+    console.log('group by')
+    console.log(groupBy);
+    console.log(_.findKey(groupBy))
+    const key =  _.findKey(groupBy)
+    const totalWeight = _.sumBy(items, 'weight');
+    const count = items.length;
+
+    return {
+        subSubRow: _.findKey(groupBy),
+        count: count,
+        weight: totalWeight,
+        items: items
+
+    }
+   
+};
+
+const calculateResultArray = (groupedBy, baseValue, secondValue, thirdValue) => {
+    return Object.keys(groupedBy).map(groupByValue => {
+        const itemsBy = groupedBy[groupByValue];
+        const groupedByFirstLevel = groupByFirstLevel(itemsBy, secondValue);
+        //TOTAL WEIGHT FOR THE FIRST ARRAY:
+        const totalWeight = _.sumBy(itemsBy, 'weight');
+        
+        const secondArray = calculateSecondArray(groupedByFirstLevel);
+        
+        const thirdArray = calculateThirdArray(secondArray, thirdValue);
+        
+        console.log(thirdArray)
+       
+        // const thirdArray = calculateThirdArray(thirdValue)
+
+        return {
+            count: secondArray.length,
+            total: totalWeight,
+            row: itemsBy[0][baseValue],
+            subRow: secondArray,
+            subSubRow: thirdArray,
+           
+        };
+    });
+};
+
+
+
 export default function CustomReport() {
     const [newData, setNewData] = useState([])
     const [baseValue, setBaseValue] = useState('date')
     const [secondValue, setSecondValue] = useState('department')
+    const [thirdValue, setThirdValue] = useState('classification')
     
 
     useEffect(() => {
-        console.log(baseValue)
-        console.log(secondValue)
+        // console.log(baseValue)
+        // console.log(secondValue)
     }, [baseValue, secondValue])
 
     useEffect(() => {
-        // choose what to group by
+      
+
         const groupedBy = _.groupBy(data, baseValue);
-
-        const resultArray = Object.keys(groupedBy).map(groupByValue => {
-            const itemsBy = groupedBy[groupByValue];
-            // console.log('items by')
-            // console.log(itemsBy)
-            const groupedByDepartment = _.groupBy(itemsBy, secondValue);
-
-            const departmentArray = Object.keys(groupedByDepartment).map(department => {
-                const itemsInDepartment = groupedByDepartment[department];
-                const totalWeight = _.sumBy(itemsInDepartment, 'weight');
-
-                return {
-                    subRowName: department,
-                    items: itemsInDepartment,
-                    totalWeight: totalWeight,
-                    count: itemsInDepartment.length
-
-                };
-            });
-
-            return {
-                row: itemsBy[0][baseValue],
-                subRow: departmentArray,
-                count: departmentArray.length
-            };
-        });
-
-        console.log('result array')
-        console.log(resultArray)
-        setNewData(resultArray)
-    }, [baseValue, secondValue])
+    const resultArray = calculateResultArray(groupedBy, baseValue, secondValue, thirdValue);
+    console.log(resultArray)
+    setNewData(resultArray);
+    }, [baseValue, secondValue, thirdValue])
 
     return (
         <div className='data_wrapper'>
@@ -90,44 +136,22 @@ export default function CustomReport() {
                         </SelectContent>
                     </Select>
                 </div>
-                {newData.map((item, index) => {
-                    return (
-                        <div className='item_container' key={index}>
-                            <div className='item_header'>
-                                <p><span className='mr-2'>Ημ. Έκδοσης: </span> {`${item.row} `} <span className='font-bold mr-2'>{`(${item.count})`} </span></p>
-                            </div>
-                            <div className='item_body'>
-                                {item.subRow.map((item, index) => {
-                                    return (
-                                        <div className='item_body_container' key={index}>
-                                            <div className='font-bold'>{`${item.subRowName} (${item.count}) `}</div>
-                                            {item.items.map((item, index1) => {
-                                                return (
-                                                    <div className='item_body_line' key={index1}>
-                                                        <p className='font-bold block mr-4'>{`${index1 + 1}:`}</p>
-                                                        <span className='sub_item_container'>
-                                                            <p className='mr-2'>{"Χρήστης:"}</p>
-                                                            <p className='text-red-700'>{item.user}</p>
-                                                        </span>
-                                                        <span className='sub_item_container'>
-                                                            <p className='mr-2'>{"Είδος:"}</p>
-                                                            <p className='text-red-700'>{item.classification}</p>
-                                                        </span>
-                                                        <span className='sub_item_container'>
-                                                            <p className='mr-2'>{"Βάρος:"}</p>
-                                                            <p className='text-red-700'>{item.weight}</p>
-                                                        </span>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )
-                                })}
-                            </div>
-
-                        </div>
-                    )
-                })}
+               
+                <div>
+                    <Select onValueChange={(val) => setThirdValue(val)}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="level 3" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="user">User</SelectItem>
+                            <SelectItem value="date">Ημερομηνία</SelectItem>
+                            <SelectItem value="barcode">Barcode</SelectItem>
+                            <SelectItem value="classification">Είδος</SelectItem>
+                            <SelectItem value="department">Τμήμα</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+               
             </div>
         </div>
        
