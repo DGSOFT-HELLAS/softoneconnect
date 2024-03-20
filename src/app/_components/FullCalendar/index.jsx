@@ -4,143 +4,145 @@ import elLocale from '@fullcalendar/core/locales/el';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list'; 
-import interactionPlugin from "@fullcalendar/interaction" 
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from "@fullcalendar/interaction"
 import EditEvent from './editEvent'
 import AddEvent from './addEvent';
 import styles from './calendar.module.css'
 
 
-function addEventReducer(state, action) {
-  switch (action.type) {
-    case 'SET_ADD_EVENT':
-      return { ...state, addEvent: action.payload };
-    case 'SET_EVENT_DATE':
-      return { ...state, event: { ...state.event, date: action.payload } };
-    // Add other cases for different state transitions
-    default:
-      return state;
-  }
-}
 
 
 export default function RFullCalendar() {
 
-  
-  const [state, setState] = useState({
-    editEvent: false,
-    addEvent: false,
-    event: {
-      title: '',
-      start: '',
-      end: '',
-      extendedProps: {
-        description: ''
-      },
-    }
-  })
-  const [editModal, setEditModal] = useState(false);
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: 'Event 1',
-      start: '2024-03-06 14:00',
-      end: '2010-03-06 14:30:00',
-      extendedProps: {
-        description: 'Description 1'
-      },
-    
-    },
-    {
-      id: 2,
-      title: 'Event 2',
-      start: '2024-03-06 10:00',
-      end: '2024-03-06 10:20',
-      extendedProps: {
-        description: 'Description 2'
-      },
-    
-    },
 
-  ]);
+	const [state, setState] = useState({
+		editEvent: false,
+		addEvent: false,
+		event: {
+			title: '',
+			start: '',
+			end: '',
+			extendedProps: {
+				description: ''
+			},
+		}
+	})
+	const [events, setEvents] = useState([
+		{
+			id: 1,
+			title: 'Event 1',
+			start: '2024-03-06 14:00',
+			end: '2010-03-06 14:30:00',
+			extendedProps: {
+				description: 'Description 1'
+			},
 
-  useEffect(() => {
-    console.log('state')
-    console.log(state)
-  }, [state])
+		},
+		{
+			id: 2,
+			title: 'Event 2',
+			start: '2024-03-06 10:00',
+			end: '2024-03-06 10:20',
+			extendedProps: {
+				description: 'Description 2'
+			},
 
-  const handleOpenAddEvent = () => {
-    setState(prev => ({...prev, addEvent:  false}))
+		},
 
-  }
-
- 
-  const handleEvent = (name, value) => {
-    setState(prev => ({...prev, event: {...prev.event, [name]: value}}))
-  }
+	]);
 
 
 
-  
-  const handleAdd = (event) => {
-    setState(prev => ({...prev, addEvent: true, event: {...prev.event, date: event.dateStr}}))
-  };
+
+	const handleOpenAddEvent = () => {
+		setState(prev => ({ ...prev, addEvent: false }))
+	}
 
 
-  const handleEdit = (info) => {
-    setEditModal(true);
-    const calendarApi = info.view.calendar;
-    const event = calendarApi.getEventById(info.event.id);
+	//Handle to close the Edit form popup
+	const handleCloseForm = (info) => {
+		setState(prev => ({ ...prev, editEvent: false }))
+	}
 
-    // const newTitle = prompt('Edit event title:', event.title);
-    // const newDescription = prompt('Edit event description:', event.extendedProps.description);
 
-    // if (newTitle !== null) {
-    //   const updatedEvents = events.map((e) =>
-    //     e.id === info.event.id
-    //       ? {
-    //           ...e,
-    //           title: newTitle,
-    //           description: newDescription,
-    //         }
-    //       : e
-    //   );
 
-    //   setEvents(updatedEvents);
+	const handleEvent = (name, value, extendedProps) => {
 
-    //   event.setProp('title', newTitle);
-    //   event.setExtendedProp('description', newDescription);
-    //   // calendarApi.updateEvent(event);
-    // }
-  };
-  return (
-    <div className={styles.wrapper}>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin,]}
-        dateClick={(e) =>  handleAdd(e)}
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        }}
-        events={events}
-        initialView='dayGridMonth'
-        editable={true}
-        eventClick={handleEdit}
-        selectable={true}
-        locale={elLocale}
+		if (extendedProps) {
+			setState(prev => ({ ...prev, event: { ...prev.event, extendedProps: { ...prev.event.extendedProps, [name]: value } } }))
+			return;
+		}
+		setState(prev => ({ ...prev, event: { ...prev.event, [name]: value } }))
 
-      />
-      <EditEvent open={state.editEvent} setOpen={setEditModal}   />
-      <AddEvent 
-        open={state.addEvent} 
-        setOpen={handleOpenAddEvent} 
-        handleEvent={handleEvent}
-        event={state.event}
-        //Used for the calendar component to display the selected date from the calendar:
-        selectedDate={state.event.date}  />
-    </div>
-  )
+	}
+
+
+
+
+	const handleAddDate = (event) => {
+		setState(prev => ({ ...prev, addEvent: true, event: { ...prev.event, date: event.dateStr } }))
+	};
+
+
+	const handleAddSubmit = () => {
+		setEvents(prev => ([...prev, state.event]))
+		setState(prev => ({ ...prev, addEvent: false, event: { title: '', start: '', end: '', extendedProps: { description: '' } } }))
+
+	}
+
+
+	const handleEdit = (info) => {
+		setState(prev => ({ ...prev, editEvent: true }))
+		const calendarApi = info.view.calendar;
+		const event = calendarApi.getEventById(info.event.id);
+		setState(prev => ({
+			...prev,
+			event: {
+				title: event.title,
+				start: event.start,
+				end: event.end,
+				extendedProps: {
+					description: event.extendedProps.description
+				}
+			}
+		}
+		))
+
+	};
+	return (
+		<div className={styles.wrapper}>
+			<FullCalendar
+				plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin,]}
+				dateClick={(e) => handleAddDate(e)}
+				headerToolbar={{
+					left: 'prev,next today',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+				}}
+				events={events}
+				initialView='dayGridMonth'
+				editable={true}
+				eventClick={handleEdit}
+				selectable={true}
+				locale={elLocale}
+				dayMaxEventRows={2}
+
+			/>
+			<EditEvent
+				event={state.event}
+				open={state.editEvent}
+				setOpen={handleCloseForm}
+			/>
+			<AddEvent
+				open={state.addEvent}
+				setOpen={handleOpenAddEvent}
+				handleEvent={handleEvent}
+				event={state.event}
+				handleSubmit={handleAddSubmit}
+				selectedDate={state.event.date} />
+		</div>
+	)
 }
 
 

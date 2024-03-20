@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button"
+import {format} from 'date-fns'
 import {
   Dialog,
   DialogClose,
@@ -10,28 +11,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { EnvelopeOpenIcon } from "@radix-ui/react-icons"
 
 
+export default function EditEvent({open, setOpen, event}){
 
-export default function EditEvent({open, setOpen}){
+    console.log('event')
+    console.log(event)
+    const date = event.start && format(new Date(event.start), 'dd/MM/yyyy')
+    console.log(date)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-    
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
+          <DialogTitle>{event.title}</DialogTitle>
           <DialogDescription>
-            Anyone who has this link will be able to view this.
+            {date}
           </DialogDescription>
         </DialogHeader>
-        <div>
-            sefsefefsefsefsefsef
-        </div>
+
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               Close
             </Button>
+           
           </DialogClose>
         </DialogFooter>
       </DialogContent>

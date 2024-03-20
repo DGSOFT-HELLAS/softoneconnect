@@ -68,7 +68,18 @@
     column-gap: 10px;
 }
 
-
+@media  screen and (max-width: 1000px) {
+    .main {
+        padding: 3%;
+    }
+    
+}
+@media  screen and (max-width: 800px) {
+    .main {
+        padding: 2%;
+    }
+    
+}
 
 
 .toggle_theme {

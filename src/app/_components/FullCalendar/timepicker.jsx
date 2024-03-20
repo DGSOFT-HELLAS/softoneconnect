@@ -13,7 +13,7 @@ import { el } from 'date-fns/locale';
 import { format } from "date-fns";
 
 
-export default function DateTime({ label, selectedDate, handleEvent }) {
+export default function DateTime({ label, selectedDate, name, handleEvent }) {
 
 	const [state, setState] = useState({
 		hour: '12',
@@ -22,21 +22,21 @@ export default function DateTime({ label, selectedDate, handleEvent }) {
 	})
 
 
-	useEffect(() => {
-		setState(prev => ({ ...prev, startDate: selectedDate, endDate: selectedDate }))
-
-	}, [])
-
-
+	
 
 	useEffect(() => {
-		console.log(state)
+		// let hour = parseInt(state.hour) < 10 ? `0${state.hour}` : state.hour;
+		// let minutes = parseInt(state.minutes) < 10 ? `0${state.minutes}` : state.minutes;
+		handleEvent(name, `${state.date} ${state.hour}:${state.minutes}:00`)
 	}, [state])
 
+
+	
+	//There are two ways to change the TIME of the event. One is with the arrows and the other is with the input.
+	//1) handleIntervals is used to change the time with the arrows
+	//2) handleManualChange is used to change the time with the input
 	const handleIncreaseInterval = (interval, name, limit) => {
-		
 		setState(prev => {
-			
 			// If the value is already at the limit, return the previous state
 			if (parseInt(prev[name]) + interval > limit) {
 				return {
@@ -67,24 +67,34 @@ export default function DateTime({ label, selectedDate, handleEvent }) {
 		})
 	}
 
-
-	const handleChange = (e, limit) => {
+	const handleManualChange = (e, limit) => {
+	
 		let condition = e.target.value.length > 2 || e.target.value > limit || e.target.value < 0 ;
 		if(condition) return;
 
 		const name = e.target.name;
-		let value =  e.target.value ;
-		value = (parseInt(value) < 10 && parseInt(value) >= 5) ? `0${value}` : value
+		let value =  e.target.value;
+		//If the value is less than 10, add a 0 in front of it
+		// value = (parseInt(value) < 10 && parseInt(value) >= 5) ? `0${value}` : value
 		setState(prev => ({ ...prev, [name]:  value}))
 	}
 
+	//When the user selects a date from the calendar, the date is formatted and set to the state
 	const handleSelectDate = (e) => {
 		let formated = format(e, "yyyy-MM-dd");
 		setState(prev => ({ ...prev, date: formated }))
 	}
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+		  // Handle the Enter key press, for example, submit the form or perform an action
+		  console.log('Enter key pressed!');
+		}
+	  };
+	
 	return (
 		<Popover>
-			<div className="w-full ">
+			<div className="w-full pb-2 ">
 				<Label htmlFor="message">{label}</Label>
 				<div className={styles.inputContainer}>
 					<PopoverTrigger asChild>
@@ -106,7 +116,15 @@ export default function DateTime({ label, selectedDate, handleEvent }) {
 					{/* Single Input */}
 					<div className={styles.timeContainer}>
 						<div className={styles.timeInput}>
-							<input name="hour" onChange={(e) => handleChange(e, 24)} type="number" className={styles.timeSmallInput} value={state.hour} />
+							<input 
+								name="hour" 
+								onChange={(e) => handleManualChange(e, 24)} 
+								type="number" 
+								className={styles.timeSmallInput} 
+								value={state.hour} 
+								onKeyDown={handleKeyPress}
+
+							/>
 							<div className={styles.arrows}>
 								<button onClick={() => handleIncreaseInterval(1, 'hour', 24)}>
 									<ChevronUp />
@@ -117,9 +135,14 @@ export default function DateTime({ label, selectedDate, handleEvent }) {
 							</div>
 						</div>
 						<span>:</span>
-						{/* Single Input For setting time */}
 						<div className={styles.timeInput}>
-							<input name="minutes" onChange={(e) => handleChange(e)} type="text" className={styles.timeSmallInput} value={state.minutes} />
+							<input 
+								name="minutes" 
+								onChange={(e) => handleManualChange(e)} 
+								type="text" 
+								className={styles.timeSmallInput} 
+								value={state.minutes} 
+							/>
 							<div className={styles.arrows}>
 								<button onClick={() => handleIncreaseInterval(5, 'minutes', 60)}>
 									<ChevronUp />
@@ -130,6 +153,9 @@ export default function DateTime({ label, selectedDate, handleEvent }) {
 							</div>
 						</div>
 					</div>
+					{/* <div className={styles.hourContainer}>
+						<CalendarIcon />
+					</div> */}
 				</div>
 			</div>
 		</Popover>
