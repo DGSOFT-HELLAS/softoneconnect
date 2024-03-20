@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@import './_styles/dashboard_layout.css';
-
-
-
 :root {
     --radius-sm: 0.30rem;
     --font-xs: 0.80rem;

@@ -1,18 +1,12 @@
 
 
-import { Nav } from "../_components/Nav"
-import { SidebarItems } from "../_components/Sidebar"
-export default async function DashboardLayout({children}) {
- 
 
+import DashboardLayout from "../_components/DashboardLayout"
+export default async function Layout({children}) {
     return (
-        <section className="dash_wrapper">
-             <Nav />
-             <section className="dash_content">
-                        <SidebarItems />
-                    <main className="main">{children}</main>
-             </section>
-        </section>
+        <DashboardLayout>
+            {children}
+        </DashboardLayout>
     )
 }
 
