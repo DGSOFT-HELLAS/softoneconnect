@@ -54,3 +54,13 @@ Prepare your Next.js application for deployment:
 💎https://dev.to/igorfilippov3/deploy-nextjs-to-contabo-vps-56f7
 I do not quite remember if this was the exact tutorial I used to deploy it to Contabo. But the process was pretty straightfoward if done correctly.
 This is an already deployed project so you can further look into it. For more information about deployment contact Mr Chris.
+
+In an already DEPLOYED project on contabo: 
+
+go to the root folder: 
+1) git pull origin main // or the actual name of the branch
+2) npm install // to make sure you have all the latest dependancies installed
+3) npm run build // to build the project
+4) pm2 restart softoneconnect
+
+you new version is now uploaded!
