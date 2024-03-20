@@ -12,10 +12,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ProfileAvatar from "../ProfileAvatar"
-import { sidebarStore } from "@/store"
-export function Nav() {
+ export function Nav() {
     const { openSidebar, setOpenSidebar } = sidebarStore();
-    console.log(openSidebar)
     return (
         <div className="nav_container">
             < Logo />
