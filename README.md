@@ -33,7 +33,7 @@ Add the following environment variables with their respective values:
 💎 NEXTAUTH_SECRET=""
 💎 MONGO_URI=""
 You can use any mongoDB database you want, create a new one or find the credentials for the existing one.
-💎 JWT_SECRET=""
+💎 JWT_SECRET=""s
 
 Step 4: Running the Project Locally
 
@@ -50,16 +50,6 @@ Open your web browser and go to http://localhost:3000 to view the admin panel.
 Unfortunately, Contabo's specific deployment process may vary, but here's a general guide:
 Prepare your Next.js application for deployment:
 
-💎 Connect to your Contabo server via SSH.
-💎 Transfer your Next.js project files to the server, either via SCP or Git.
-💎 Install Node.js and npm on your Contabo server if they are not already installed.
-💎 Install PM2 globally (npm install -g pm2) for process management.
-💎 Navigate to your project directory and run npm install --production to install production dependencies.
-💎 Start your Next.js application with PM2: pm2 start npm --name "my-nextjs-app" -- start.
-Optionally, set up a reverse proxy with Nginx or Apache to route incoming HTTP requests to your Next.js application.
-💎 Set up domain and DNS:
-
-💎 Configure your domain's DNS settings to point to your Contabo server's IP address.
-💎 Configure Nginx your Contabo server to serve your Next.js application at your domain.
-💎 Secure your deployment:
-💎 Set up SSL/TLS certificates for HTTPS encryption using Let's Encrypt or a similar service.
+💎https://dev.to/igorfilippov3/deploy-nextjs-to-contabo-vps-56f7
+I do not quite remember if this was the exact tutorial I used to deploy it to Contabo. But the process was pretty straightfoward if done correctly.
+This is an already deployed project so you can further look into it. For more information about deployment contact Mr Chris.
