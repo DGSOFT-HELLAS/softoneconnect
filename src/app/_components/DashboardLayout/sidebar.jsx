@@ -1,10 +1,9 @@
 'use client'
-import { useState, useEffect } from "react"
-import { Moon, Sun, ChevronDown, LayoutDashboard } from "lucide-react"
-import { menuData } from "@/app/_components/Sidebar/menuConfig"
+import { useState } from "react"
+import {  ChevronDown } from "lucide-react"
 import Link from "next/link"
 import './styles.css';
-
+import { menuData } from "./menuConfig"
 export function SidebarItems() {
     const [active, setActive] = useState(null)
 

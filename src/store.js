@@ -7,3 +7,9 @@ export const useModalStore = create((set) => ({
     setOpenEditModal: () => set((state) => ({ openEditModal: !state.openEditModal })),
 }))
 
+
+
+export const sidebarStore = create((set) => ({
+    openSidebar: false,
+    setOpenSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
+}))

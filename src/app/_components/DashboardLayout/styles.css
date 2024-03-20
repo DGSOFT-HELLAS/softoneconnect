@@ -56,7 +56,7 @@
 
 .main {
     overflow-y: scroll;
-    padding: 100px;
+    padding: 20px;
     height: calc(100vh - 60px);
     background-color: var(--background-main);
 }
