@@ -1,6 +1,7 @@
 
 import { Nav } from "./nav"
 import { SidebarItems } from "./sidebar"
+
 export default function DashboardLayout({children}) {
     return (
         <section className="dash_wrapper">

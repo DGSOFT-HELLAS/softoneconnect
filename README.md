@@ -35,6 +35,7 @@ Add the following environment variables with their respective values:
 You can use any mongoDB database you want, create a new one or find the credentials for the existing one.
 💎 JWT_SECRET=""s
 
+
 Step 4: Running the Project Locally
 
 💎 Ensure you have Node.js and npm installed on your system.
