@@ -1,6 +1,6 @@
 'use client'
-import { useState, useEffect } from "react"
-import { Moon, Sun, ChevronDown, LayoutDashboard } from "lucide-react"
+import { useState} from "react"
+import {  ChevronDown } from "lucide-react"
 import { menuData } from "@/app/_components/Sidebar/menuConfig"
 import Link from "next/link"
 import './styles.css';
