@@ -11,14 +11,15 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ProfileAvatar from "../ProfileAvatar"
+import { sidebarStore } from "@/store"
+ export function Nav() {
+    const { openSidebar, setOpenSidebar } = sidebarStore()
 
-
-export function Nav() {
     return (
         <div className="nav_container">
             < Logo />
             <nav>
-               <Button variant="outline" size="icon">
+               <Button onClick={setOpenSidebar} variant="outline" size="icon">
                     <MenuIcon className="h-[1.2rem] w-[1.2rem]"  />
                 </Button> 
             </nav>
