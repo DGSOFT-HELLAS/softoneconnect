@@ -1,9 +1,6 @@
-import { Metadata } from "next"
-import Image from "next/image"
-import Link from "next/link"
+
 import RegisterForm from "@/app/_components/RegisterForm"
-import { FcGoogle } from "react-icons/fc";
-import { Button } from "@/components/ui/button";
+
 
 export const metadata = {
     title: "Authentication",
