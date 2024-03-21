@@ -1,6 +1,12 @@
 'use client'
+<<<<<<< HEAD
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+=======
+import { useState} from "react"
+import {  ChevronDown } from "lucide-react"
+import { menuData } from "@/app/_components/Sidebar/menuConfig"
+>>>>>>> recharts
 import Link from "next/link"
 import './styles.css';
 import { menuData } from "./menuConfig"
