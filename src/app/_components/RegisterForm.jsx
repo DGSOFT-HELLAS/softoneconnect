@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -16,8 +16,10 @@ import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { ReloadIcon } from "@radix-ui/react-icons"
-import { redirect } from "next/dist/server/api-utils"
 import { useRouter } from "next/navigation"
+
+
+
 const FormSchema = z.object({
     email: z.string().email({
         message: "Invalid email address",
@@ -50,7 +52,6 @@ export default function RegisterForm() {
     
 
     async function onSubmit(data) {
-        console.log(data)
         setState(prev => ({...prev, loading: true, disabled: true}))
         try {
             const resp = await axios.post('/api/auth/register', {

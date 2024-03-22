@@ -18,10 +18,9 @@ export const metadata = {
 export default function RootLayout({ children, session, ...pageProps }) {
  
   return (
-    < ClientSessionProvider  >
     <html suppressHydrationWarning lang="en">
+    < ClientSessionProvider  >
       <body className={roboto.className}>
-       
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -32,8 +31,8 @@ export default function RootLayout({ children, session, ...pageProps }) {
             {children}
           </ThemeProvider>
       </body>
-    </html>
     </ClientSessionProvider>
+    </html>
 
 
   );

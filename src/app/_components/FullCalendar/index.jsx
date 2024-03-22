@@ -9,7 +9,7 @@ import interactionPlugin from "@fullcalendar/interaction"
 import EditEvent from './editEvent'
 import AddEvent from './addEvent';
 import styles from './calendar.module.css'
-
+import axios from 'axios'
 
 
 
@@ -31,9 +31,10 @@ export default function RFullCalendar() {
 	const [events, setEvents] = useState([
 		{
 			id: 1,
-			title: 'Event 1',
-			start: '2024-03-06 14:00',
-			end: '2010-03-06 14:30:00',
+			title: 'Επισκευή Καλογεράκης',
+			start: '2024-03-21 14:00',
+			end: '2010-03-21 14:30:00',
+			backgroundColor: '#FF5733',
 			extendedProps: {
 				description: 'Description 1'
 			},
@@ -41,9 +42,75 @@ export default function RFullCalendar() {
 		},
 		{
 			id: 2,
-			title: 'Event 2',
-			start: '2024-03-06 10:00',
-			end: '2024-03-06 10:20',
+			title: 'Πελάτης Διαμαντόπουλος',
+			start: '2024-03-21 15:00',
+			end: '2010-03-21 15:30:00',
+			backgroundColor: '#53af1e',
+			extendedProps: {
+				description: 'Description 1'
+			},
+
+		},
+		{
+			id: 3,
+			title: 'Επανεφοδιασμός',
+			backgroundColor: '#ff33f5',
+			start: '2024-03-22 10:00',
+			end: '2024-03-22 10:20',
+			extendedProps: {
+				description: 'Description 2'
+			},
+
+		},
+		{
+			id: 3,
+			title: 'Πελάτης Καλογεράκης',
+			start: '2024-03-22 10:00',
+			end: '2024-03-22 10:20',
+			backgroundColor: '#53af1e',
+			extendedProps: {
+				description: 'Description 2'
+			},
+
+		},
+		{
+			id: 3,
+			title: 'Πελάτης Καλογεράκης',
+			start: '2024-03-22 10:00',
+			end: '2024-03-22 10:20',
+			backgroundColor: '#53af1e',
+			extendedProps: {
+				description: 'Description 2'
+			},
+
+		},
+		{
+			id: 3,
+			title: 'Πελάτης Καλογεράκης',
+			start: '2024-03-23 10:00',
+			end: '2024-03-23 10:20',
+			backgroundColor: '#53af1e',
+			extendedProps: {
+				description: 'Description 2'
+			},
+
+		},
+		{
+			id: 3,
+			title: 'Πελάτης Καλογεράκης',
+			start: '2024-03-23 10:00',
+			end: '2024-03-23 10:20',
+			backgroundColor: '#53af1e',
+			extendedProps: {
+				description: 'Description 2'
+			},
+
+		},
+		{
+			id: 3,
+			title: 'Πελάτης Καλογεράκης',
+			start: '2024-03-23 10:00',
+			end: '2024-03-24 10:20',
 			extendedProps: {
 				description: 'Description 2'
 			},
@@ -54,7 +121,10 @@ export default function RFullCalendar() {
 
 
 
-
+	useEffect(() => {
+		console.log(state.event)
+		console.log(state.events)
+	}, [state, events])
 	const handleOpenAddEvent = () => {
 		setState(prev => ({ ...prev, addEvent: false }))
 	}
@@ -70,7 +140,7 @@ export default function RFullCalendar() {
 	const handleEvent = (name, value, extendedProps) => {
 
 		if (extendedProps) {
-			setState(prev => ({ ...prev, event: { ...prev.event, extendedProps: { ...prev.event.extendedProps, [name]: value } } }))
+			setState(prev => ({ ...prev, event: { ...prev.event, extendedProps: { ...prev.event.extendedProps, [name]: value, backgroundColor: '#FF5733'} } }))
 			return;
 		}
 		setState(prev => ({ ...prev, event: { ...prev.event, [name]: value } }))
@@ -85,8 +155,18 @@ export default function RFullCalendar() {
 	};
 
 
-	const handleAddSubmit = () => {
+	const handleAddSubmit = async () => {
 		setEvents(prev => ([...prev, state.event]))
+		const {data} = await axios.post('/api/calendarEvents', {
+			title: state.event.title,
+			start: state.event.start,
+			end: state.event.end,
+			backgroundColor: state.event.backgroundColor,
+			description: state.event.extendedProps.description
+		})
+		console.log('data')
+		console.log(data)
+		//Clears previous state of the event and closes the popup
 		setState(prev => ({ ...prev, addEvent: false, event: { title: '', start: '', end: '', extendedProps: { description: '' } } }))
 
 	}
@@ -126,7 +206,7 @@ export default function RFullCalendar() {
 				eventClick={handleEdit}
 				selectable={true}
 				locale={elLocale}
-				dayMaxEventRows={2}
+				dayMaxEventRows={4}
 
 			/>
 			<EditEvent

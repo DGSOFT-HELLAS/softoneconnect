@@ -18,7 +18,6 @@ import { CheckboxWithText } from "./InputCheck";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useSession } from "next-auth/react"
 import { toast } from 'react-toastify';
 import { ReloadIcon } from "@radix-ui/react-icons"
 

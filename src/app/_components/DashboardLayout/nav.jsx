@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import ProfileAvatar from "../ProfileAvatar"
 import { sidebarStore } from "@/store"
+
  export function Nav() {
-    const { openSidebar, setOpenSidebar } = sidebarStore()
+    const { setOpenSidebar } = sidebarStore()
 
     return (
         <div className="nav_container">
