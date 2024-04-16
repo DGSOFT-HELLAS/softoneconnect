@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import {
-
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
@@ -135,6 +134,8 @@ export const columns = [
 export function TicketsTable({ data }) {
     const [columnVisibility, setColumnVisibility] = React.useState({})
     const [rowSelection, setRowSelection] = React.useState({})
+    const [columnFilters, setColumnFilters] = React.useState()
+
     const table = useReactTable({
         data,
         columns,
@@ -146,6 +147,7 @@ export function TicketsTable({ data }) {
         state: {
             columnVisibility,
             rowSelection,
+            columnFilters,
         },
     })
 
@@ -181,7 +183,6 @@ export function TicketsTable({ data }) {
 
 
 const TableComponent = ({ data, columns, table }) => {
-
     return (
         <div className="">
             <div className="mb-3">

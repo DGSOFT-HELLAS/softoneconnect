@@ -1,0 +1,63 @@
+
+.tabs {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.tab {
+    border-radius: 50px;
+    min-width: 100px;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    padding: 5px;
+    color: var(--muted-foreground);
+    font-size: 15px;
+}
+
+.active {
+    background-color: var(--border);
+    color: var(--primary);
+}
+
+
+
+
+/* TABLE */
+
+.tableContainer {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.034);
+}
+.status {
+    padding: 5px 8px;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    display: block;
+    width:100px;
+    text-align: center;
+}
+
+
+.statusActive {
+    background-color: #2AC769;
+}
+
+.statusToBe {
+    background-color: #FF7E8D;
+}
+
+
+
+.ticketUnderline {
+    text-decoration: underline;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.stringifyText {
+    max-width: 400px;
+}

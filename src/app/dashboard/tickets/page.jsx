@@ -1,90 +1,64 @@
 
-import { TicketsTable } from "@/app/_components/TicketsTable";
 import translateData from "@/utils/translateData";
 import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import BarChart from "@/app/_components/BarChart";
-import TicketsPieChart from "@/app/_components/TicketsPieChart/PieChart";
-import TicketsLineChart from "@/app/_components/TicketsLineChart";
+
+import Tasks from "@/app/_components/Tasks";
 
 
+const fetchData = async (url) => {
+    try {
+        const response = await fetch(`https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/${url}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                username: "Service",
+                password: "Service",
+                usercode: 1,
+            })
+        });
 
+        const _data = await translateData(response);
+        return _data.result;
+    } catch (e) {
+        console.log(e)
+        return e;
+    }
 
-
-
-const fetchTickets = async () => {
-    const response = await fetch("https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/testCRMWebClient", {
-        method: 'POST',
-        body: JSON.stringify({
-            username: "Service",
-            password: "Service",
-        })
-    });
-    const _data = await translateData(response);
-    let _parseData = JSON.parse(_data.result)
-    return _parseData;
 }
 
 
+
+
+
+
 const Page = async () => {
-    const data = await fetchTickets();
-    console.log(data)
     const session = await getServerSession(authOptions);
-
-    const ticketData = countTickets(data);
-    const classifications = categorizeClasses(data);
-    console.log
-
-
-
+    
     if (!session) {
         console.log('no session')
         redirect('/login')
     }
 
+
+    //Fetch data from CRM
+    const  callsPromise =  fetchData('testCRMCallsWebClient');
+    const tasksPromise = fetchData('testCRMWebClient');
+    //Promisify the data 
+    const [calls, tasks] = await Promise.all([callsPromise, tasksPromise]);
+    console.log(tasks)
+
     return (
         <>
             <div className="mb-4">
                 <h2 className="text-3xl font-bold">{"Welcome back!"}</h2>
-                <p className="text-muted-foreground">{"Here's some visualization and a list about Tickets!"}</p>
             </div>
-            <div className="mb-4 grid grid-cols-2 gap-4">
-                <div className="bg-background  radius-md">
-                    <div className="mb-4 p-4 border-b text-muted-foreground border-background-main">
-                        <h2 className="text-lg  spacing-1">{"Tickets per agent"}</h2>
-                    </div>
-                    <div className="p-4 ">
-                        <BarChart data={ticketData} dataKeyX="initials"   />
-                    </div>
-                </div>
-               
-                <div className="bg-background  radius-md">
-                    <div className="mb-4 p-4 border-b text-muted-foreground border-background-main">
-                        <h2 className="text-lg">Ticketing Classification Data:</h2>
-                    </div>
-                    <div className="p-4 pb-0">
-                        <TicketsPieChart data={classifications}   />
-                    </div>
-                </div>
-
-               
-
+            <div>
+                <Tasks  
+                    calls={calls}
+                    tasks={tasks}
+                />
             </div>
-            <div className="mb-4 grid grid-cols-1">
-            <div className="bg-background  radius-md">
-                    <div className="mb-4 p-4 border-b text-muted-foreground border-background-main">
-                        <h2 className="text-lg  spacing-1">{"Tickets per agent"}</h2>
-                    </div>
-                    <div className="p-4 ">
-                        <TicketsLineChart   />
-                    </div>
-                </div>
-            </div>
-            <div className="mb-4">
-                <h2 className="text-3xl font-bold">{"Data Table"}</h2>
-            </div>
-            < TicketsTable data={data} />
         </>
     )
 }

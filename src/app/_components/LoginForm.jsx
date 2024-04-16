@@ -60,6 +60,7 @@ export default function LoginForm() {
                 redirect: false,
             })
             console.log('resp')
+            console.log(resp)
             if (resp.status !== 200) {
                 toast.error("Error Notification !");
                 setState(prev => ({ ...prev, loading: false, disabled: false }))
