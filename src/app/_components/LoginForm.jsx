@@ -59,8 +59,7 @@ export default function LoginForm() {
                 password: data.password,
                 redirect: false,
             })
-            console.log('resp')
-            console.log(resp)
+       
             if (resp.status !== 200) {
                 toast.error("Error Notification !");
                 setState(prev => ({ ...prev, loading: false, disabled: false }))
@@ -108,17 +107,12 @@ export default function LoginForm() {
                         </FormItem>
                     )}
                 />
-                <div className="forgot_pass_container">
-                    <CheckboxWithText label="keep me signed in" />
-                    <span className=" text-sm">Forgot password?</span>
-                </div>
+              
                 <Button disabled={state.disabled}>
                     {state.loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                     Login
                 </Button>
-                <div className="go_back_link">
-                    <Link href="/register">New here? Register now!</Link>
-                </div>
+               
             </form>
         </Form>
 

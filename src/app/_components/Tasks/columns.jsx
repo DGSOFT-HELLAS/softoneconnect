@@ -141,11 +141,11 @@ export const taskColumns = [
             <div className="capitalize">{row.getValue("ACTOR")}</div>
         ),
     },
-    {
-        accessorKey: "NAME",
-        header: "NAME",
-        cell: ({ row }) => <div>{row.getValue("NAME")}</div>,
-    },
+    // {
+    //     accessorKey: "NAME",
+    //     header: "NAME",
+    //     cell: ({ row }) => <div>{row.getValue("NAME")}</div>,
+    // },
     {
         accessorKey: "CUSTOMER",
         header: "Πελάτης",

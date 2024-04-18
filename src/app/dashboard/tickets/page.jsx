@@ -7,14 +7,12 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Tasks from "@/app/_components/Tasks";
 
 
-const fetchData = async (url) => {
+const fetchData = async (url, usercode) => {
     try {
         const response = await fetch(`https://dgsoft.oncloud.gr/s1services/JS/ARIADNE/${url}`, {
             method: 'POST',
             body: JSON.stringify({
-                username: "Service",
-                password: "Service",
-                usercode: 1,
+                usercode: usercode
             })
         });
 
@@ -34,7 +32,9 @@ const fetchData = async (url) => {
 
 const Page = async () => {
     const session = await getServerSession(authOptions);
-    
+    console.log('session')
+    console.log(session)
+    let usercode = session.usercode;
     if (!session) {
         console.log('no session')
         redirect('/login')
@@ -42,16 +42,18 @@ const Page = async () => {
 
 
     //Fetch data from CRM
-    const  callsPromise =  fetchData('testCRMCallsWebClient');
-    const tasksPromise = fetchData('testCRMWebClient');
-    //Promisify the data 
+    const  callsPromise =  fetchData('testCRMCallsWebClient',  usercode  );
+    const tasksPromise = fetchData('testCRMWebTaskClient', usercode );
     const [calls, tasks] = await Promise.all([callsPromise, tasksPromise]);
-    console.log(tasks)
 
+    // console.log('calls')
+    // console.log(calls)
+    // console.log(tasks)
     return (
         <>
             <div className="mb-4">
-                <h2 className="text-3xl font-bold">{"Welcome back!"}</h2>
+                <h2 className="text-xl font-bold">👋 Καλημέρα!</h2>
+                <h3 className="task_subheader">Δείτε όλα τα διαθέσιμα tasks σας!</h3>
             </div>
             <div>
                 <Tasks  
@@ -64,51 +66,5 @@ const Page = async () => {
 }
 
 
-function countTickets(tickets) {
-   
-    const agentTicketCounts = [];
-
-    tickets.forEach(ticket => {
-        // Get the agent name
-        const agent = ticket.ACTOR;
-        const initials = agent.split(' ').map(name => name[0]).join('');
-      
-        // Find the index of the agent in the agentTicketCounts array
-        const agentIndex = agentTicketCounts.findIndex(item => item.agent === agent);
-      
-        // If the agent is not in the agentTicketCounts array, add a new object
-        if (agentIndex === -1) {
-          agentTicketCounts.push({ agent, total: 1, initials });
-        } else {
-          // If the agent is already in the agentTicketCounts array, increment the total count
-          agentTicketCounts[agentIndex].total++;
-        }
-      });
-      return agentTicketCounts;
-}
-
-
-function categorizeClasses(tickets) {
-    const classCounts = [];
-
-    tickets.forEach(ticket => {
-        const classification = ticket['Χαρακτηρισμός'];
-        const index = classCounts.findIndex(item => item['Χαρακτηρισμός'] == classification);
-        if (index === -1) {
-            classCounts.push({ 'Χαρακτηρισμός': classification, total: 1, date: getRandomDate('2023-01-01', '2024-12-31')});
-        } else {
-          classCounts[index].total++;
-        }
-      });
-      return classCounts;
-}
-
-function getRandomDate(start, end) {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-    return randomDate.toISOString(); // Convert to ISO string format
-  }
-  
 
 export default Page;

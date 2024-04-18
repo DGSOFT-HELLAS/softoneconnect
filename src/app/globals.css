@@ -267,3 +267,10 @@ body {
 .fc .fc-popover {
     z-index: 40;
 }
+
+
+
+/* TASKS */
+.task_subheader {
+    color: var(--muted-foreground)
+}

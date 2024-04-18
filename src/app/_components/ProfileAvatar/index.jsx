@@ -43,24 +43,24 @@ const ProfileAvatar = () => {
   }
 
   const { data: session } = useSession();
-  let initials = handleAvatarName(session?.name, session?.surname);
-
+  // let initials = handleAvatarName(session?.name, session?.surname);
+  let initials = session && session.name.split(' ')[0][0] + session.name.split(' ')[1][0];
   return (
     <>
-      {initials ? (
+      {/* {initials ? ( */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
               <div className='avatar_wrapper'>
                 <Button className='avatar'>
                   {initials}
                 </Button>
-                <div className="avatar_details">
+                {/* <div className="avatar_details">
                   <div>
-                    <p className='text-sm font-medium leading-none'>{session?.name} {session?.surname}</p>
+                    <p className='text-sm font-medium leading-none'>{session?.name}</p>
                     <p className='text-xs leading-none text-muted-foreground'>{session?.role}</p>
                   </div>
                   <FaAngleDown className='text-muted-foreground ml-2' />
-                </div>
+                </div> */}
               </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mt-2 w-56" align="end" forceMount>
@@ -73,15 +73,15 @@ const ProfileAvatar = () => {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem>
                 Settings
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            </DropdownMenuGroup> */}
+            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 signOut({ redirect: false }).then(() => {
@@ -93,9 +93,9 @@ const ProfileAvatar = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      ) : (
+      {/* ) : (
         <SkeletonDemo />
-      )}
+      )} */}
     </>
 
 

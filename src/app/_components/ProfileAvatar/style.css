@@ -1,6 +1,6 @@
 .avatar_wrapper {
 	display: flex;
-	min-width: 220px;
+	/* min-width: 220px; */
 }
 
 .avatar {
