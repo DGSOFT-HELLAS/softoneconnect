@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { ArrowUpDown, MoreHorizontal, } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, Plus} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useModalStore } from "@/store"
@@ -12,7 +12,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
+import Link from "next/link"
 
 export const columnCalls = [
     {
@@ -141,11 +141,7 @@ export const taskColumns = [
             <div className="capitalize">{row.getValue("ACTOR")}</div>
         ),
     },
-    // {
-    //     accessorKey: "NAME",
-    //     header: "NAME",
-    //     cell: ({ row }) => <div>{row.getValue("NAME")}</div>,
-    // },
+   
     {
         accessorKey: "CUSTOMER",
         header: "Πελάτης",
@@ -153,7 +149,6 @@ export const taskColumns = [
     },
     {
         accessorKey: "SOACTIONCODE",
-        // header: "SOACTIONCODE",
         header: ({ column }) => {
             return (
               <Button
@@ -183,7 +178,7 @@ export const taskColumns = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const payment = row.original
+           
 
             return (
                 <DropdownMenu>
@@ -195,14 +190,19 @@ export const taskColumns = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                             onClick={() => navigator.clipboard.writeText(payment.id)}
                         >
-                            Copy payment ID
-                        </DropdownMenuItem>
+                            Aντιγραφή Σειράς
+                        </DropdownMenuItem> */}
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link className="flex align-center" href="/dashboard/tickets/add">
+                            <  Plus className="h-4 w-4 mr-2" /> 
+                                Προβολή Task
+                            </Link>
+                        </DropdownMenuItem>
+                        {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

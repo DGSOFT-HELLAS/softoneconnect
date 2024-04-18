@@ -32,7 +32,6 @@ const useCustomTable = (data, columns) => {
     const [sorting, setSorting] = useState([])
     const [columnFilters, setColumnFilters] = useState()
 
-
     const table = useReactTable({
         data,
         columns,
@@ -57,28 +56,10 @@ const useCustomTable = (data, columns) => {
 };
 
 
-export function TasksTabs({ setActiveTab, activeTab }) {
-
-    const handleClick = (index) => {
-        setActiveTab(index)
-    }
-    return (
-        <div className={styles.tabs}>
-            {tabs.map((tab, index) => {
-                return (
-                    <div
-                        key={tab.id}
-                        className={`${styles.tab} ${activeTab === index ? styles.active : ''}`}
-                        onClick={() => handleClick(index)}>{tab.name}</div>
-                )
-            })}
-        </div>
-    )
-}
 
 
-export default function Tasks({ calls, tasks }) {
-    const [activeTab, setActiveTab] = useState(0)
+
+export default function Tasks({ calls, tasks, user }) {
     const tableTasks = useCustomTable(tasks, taskColumns);
     const tableCalls = useCustomTable(calls, columnCalls);
 
@@ -91,12 +72,12 @@ export default function Tasks({ calls, tasks }) {
                     <TabsTrigger value="calls">Calls</TabsTrigger>
                 </TabsList>
                 <TabsContent value="tasks">
-                    <TasksTable data={tasks} columns={taskColumns} table={tableTasks}>
+                    <TasksTable user={user} data={tasks} columns={taskColumns} table={tableTasks}>
                         <TastToolbar table={tableTasks} />
                     </TasksTable>
                 </TabsContent>
                 <TabsContent value="calls">
-                    <TasksTable data={calls} columns={columnCalls} table={tableCalls}>
+                    <TasksTable  user={user} data={calls} columns={columnCalls} table={tableCalls}>
                         <FacetedFilter 
                             column={tableTasks.getColumn("ACTSTATUS")} 
                             options={['Το Do', 'StandBy', 'Waiting from customer']} 

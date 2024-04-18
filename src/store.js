@@ -13,3 +13,7 @@ export const sidebarStore = create((set) => ({
     openSidebar: false,
     setOpenSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
 }))
+
+
+
+

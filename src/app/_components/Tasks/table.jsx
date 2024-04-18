@@ -1,22 +1,15 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { use, useEffect, useRef, useState } from "react"
 import {
     flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
 
-import { ArrowUpDown, ChevronDown, MoreHorizontal, SlidersHorizontal, ChevronRight, ChevronLeft } from "lucide-react"
+} from "@tanstack/react-table"
+import { ReloadIcon } from "@radix-ui/react-icons"
+
+import { SlidersHorizontal, ChevronRight, ChevronLeft } from "lucide-react"
 import styles from "./styles.module.css"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-    CircleIcon,
-    QuestionMarkCircledIcon,
-} from "@radix-ui/react-icons"
+
 import {
     Select,
     SelectContent,
@@ -53,24 +46,26 @@ import {
 
 import {
     Avatar,
-    AvatarFallback,
+
     AvatarImage,
 } from "@/components/ui/avatar"
 
 
+export default function TasksTable({ columns, children, table, user }) {
+    const [value, setValue] = useState(null)
 
-export default function TasksTable({ data, columns, children, table }) {
-    const [value, setValue] = useState('ΚΟΥΣΗ ΜΑΡΙΑ')
+
+
 
     const handleValueChange = (event) => {
         setValue(event);
-        console.log(event)
         table.getColumn("ACTOR")?.setFilterValue(event)
     }
     return (
         <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
-                <SelectUser value={value} handleValueChange={ handleValueChange} />
+
+                <SelectUser user={user} value={value} handleValueChange={handleValueChange} />
             </div>
             <div className={styles.tableBody}>
                 <div className="mb-3 flex">
@@ -185,54 +180,65 @@ export default function TasksTable({ data, columns, children, table }) {
 
 
 
-function SelectUser({ value, handleValueChange}) {
+function SelectUser({ value, handleValueChange, user }) {
     return (
-        <Select  
-            onValueChange={(event) =>  handleValueChange(event)}
-            value={value}
-        >
-            <SelectTrigger  className="w-[180px] flex items-center">
-                <SelectValue  placeholder="Select a fruit" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectGroup >
-                    <SelectLabel >Actor</SelectLabel>
-                    <SelectItem value="ΚΟΥΣΗ ΜΑΡΙΑ">
-                       <span className="flex ">
-                       <Avatar className="w-[15px] h-[15px] mr-2">
-                            <AvatarImage src="/avatar1.png" alt="agent" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                        <span>
-                        ΚΟΥΣΗ ΜΑΡΙΑ
-                        </span>
-                       </span>
-                    </SelectItem>
-                    <SelectItem value="TECH">
-                       <span className="flex ">
-                       <Avatar className="w-[15px] h-[15px] mr-2">
-                            <AvatarImage src="/avatar2.png" alt="agent" />
-                            <AvatarFallback>TC</AvatarFallback>
-                        </Avatar>
-                        <span>
-                        TECH
-                        </span>
-                       </span>
-                    </SelectItem>
-                    <SelectItem value={null}>
-                       <span className="flex ">
-                       <Avatar className="w-[15px] h-[15px] mr-2">
-                            <AvatarImage src="/avatar2.png" alt="agent" />
-                            <AvatarFallback>TC</AvatarFallback>
-                        </Avatar>
-                        <span>
-                        ACTOR ALL
-                        </span>
-                       </span>
-                    </SelectItem>
-                </SelectGroup>
-            </SelectContent>
-        </Select>
+            <Select
+                onValueChange={(event) => handleValueChange(event)}
+                value={value}
+            >
+                <SelectTrigger className="w-[200px] flex items-center">
+                    <SelectValue  placeholder={"Επιλογή Χρήστη"} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup >
+                        <SelectLabel >Actor</SelectLabel>
+                        <SelectItem value={user?.name}>
+                            <span className="flex ">
+                                <Avatar className="w-[15px] h-[15px] mr-2">
+                                    <AvatarImage src="/avatar1.png" alt="agent" />
+                                </Avatar>
+                                <span className="text-xs">
+                                    {user > 40 ? user?.name.slice(0, 35) + '...' : user?.name}
+                                </span>
+                            </span>
+                        </SelectItem>
+                        <SelectItem value="TECH">
+                            <span className="flex ">
+                                <Avatar className="w-[15px] h-[15px] mr-2">
+                                    <AvatarImage src="/avatar2.png" alt="agent" />
+                                </Avatar>
+                                <span className="text-xs">
+                                    TECH
+                                </span>
+                            </span>
+                        </SelectItem>
+                        <SelectItem value="CUSTOM">
+                            <span className="flex ">
+                                <Avatar className="w-[15px] h-[15px] mr-2">
+                                    <AvatarImage src="/avatar2.png" alt="agent" />
+                                </Avatar>
+                                <span className="text-xs">
+                                    CUSTOM
+                                </span>
+                            </span>
+                        </SelectItem>
+                        <SelectItem value={null}>
+                            <span className="flex ">
+                                <Avatar className="w-[15px] h-[15px] mr-2">
+                                    <AvatarImage src="/avatar2.png" alt="agent" />
+                                </Avatar>
+                                <span className="text-xs">
+                                    ΌΛΑ ΤΑ TASKS
+                                </span>
+                            </span>
+                        </SelectItem>
+                    </SelectGroup>
+
+                </SelectContent>
+
+
+            </Select>
+
     )
 }
 
