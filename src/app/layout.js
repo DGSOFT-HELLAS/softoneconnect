@@ -3,8 +3,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import {  ToastContainer } from 'react-toastify';
 import ClientSessionProvider from "./_components/ClientSessionProvider";
-
-
+import TanstackProvider from "./_components/TansStackProvider";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400", "500", "700"] });
 
@@ -16,10 +15,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children, session, ...pageProps }) {
+  
  
+
   return (
     <html suppressHydrationWarning lang="en">
-    < ClientSessionProvider  >
+    <ClientSessionProvider  >
+      <TanstackProvider>
       <body className={roboto.className}>
           <ThemeProvider
             attribute="class"
@@ -31,6 +33,7 @@ export default function RootLayout({ children, session, ...pageProps }) {
             {children}
           </ThemeProvider>
       </body>
+      </TanstackProvider>
     </ClientSessionProvider>
     </html>
 

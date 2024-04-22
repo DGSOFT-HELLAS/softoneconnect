@@ -8,16 +8,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-export function InputWithLabel({label, placeholder, control, name}) {
+export function InputText({label, placeholder, control, name, disabled}) {
   return (
     <FormField
+
           control={control}
           name={name}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{label}</FormLabel>
               <FormControl>
-                <Input placeholder={placeholder} {...field} />
+                <Input
+                  disabled={disabled} 
+                  placeholder={placeholder} {...field} 
+                  />
               </FormControl>
               <FormMessage />
             </FormItem>

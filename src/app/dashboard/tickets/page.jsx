@@ -32,8 +32,10 @@ const fetchData = async (url, usercode) => {
 
 const Page = async () => {
     const session = await getServerSession(authOptions);
-   
+    console.log(session)
     let usercode = session?.usercode;
+
+    
     if (!session) {
         console.log('no session')
         redirect('/login')
@@ -45,7 +47,7 @@ const Page = async () => {
     const tasksPromise = fetchData('testCRMWebTaskClient', usercode );
     const [calls, tasks] = await Promise.all([callsPromise, tasksPromise]);
 
- 
+    
     return (
         <>
             <div className="mb-4">

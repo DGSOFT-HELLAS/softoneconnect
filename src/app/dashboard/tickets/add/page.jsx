@@ -7,6 +7,9 @@ async function fetchClients() {
         headers: {
             'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+            offset:1
+        }),
          next: { revalidate: 600 } 
     })
     let data = await translateData(response)
@@ -18,8 +21,7 @@ async function fetchClients() {
 export default async function Page() {
     const clientsPromise = fetchClients();
     const [clients] = await Promise.all([clientsPromise]);
-
-    console.log(clients.length)
+    
 
     return (
         <div>

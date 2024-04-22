@@ -7,6 +7,9 @@ export default function ErrorTemplate({ error, reset }) {
     return (
         <main className="error_page">
 
+
+        
+
             <div className="error_container">
                 <div className="error_header">
                     <AlertCircle />

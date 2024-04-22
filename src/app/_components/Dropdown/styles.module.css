@@ -1,0 +1,11 @@
+.item {
+    padding: 5px;
+    padding-left: 10px;
+    display: block;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.active {
+    background-color: var(--muted);
+}

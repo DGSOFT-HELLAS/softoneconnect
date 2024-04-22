@@ -43,8 +43,7 @@ const ProfileAvatar = () => {
   }
 
   const { data: session } = useSession();
-  // let initials = handleAvatarName(session?.name, session?.surname);
-  let initials = session && session.name.split(' ')[0][0] + session.name.split(' ')[1][0];
+  // let initials = session ? session?.name.split(' ')[0][0] + session?.name.split(' ')[1][0] : '';
   return (
     <>
       {/* {initials ? ( */}
@@ -52,7 +51,8 @@ const ProfileAvatar = () => {
           <DropdownMenuTrigger asChild>
               <div className='avatar_wrapper'>
                 <Button className='avatar'>
-                  {initials}
+                  {/* {initials} */}
+                  US
                 </Button>
                 {/* <div className="avatar_details">
                   <div>
