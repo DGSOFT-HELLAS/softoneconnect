@@ -4,101 +4,189 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import {Form} from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
 import { CustomDropSearch } from '../InfiniteDropdownWithSearch'
-
+import { useSession } from 'next-auth/react'
 import { format } from 'date-fns'
 import { InputText } from '../Inputs/InputText'
 import { getClients, getCompanyContacts } from '@/app/actions'
 import { CustomDropdown } from '../Dropdown'
 import { useEffect } from 'react'
+import { TextArea } from '../Inputs/TextArea'
+import { useQuery } from '@tanstack/react-query'
+import { fetchUsers } from '@/app/actions'
+import { handleSubmitTask } from '@/app/actions'
 const FormSchema = z.object({
-    
-    client: z.string({
-        required_error: "Please select a language.",
+
+    TRDR: z.string({
+        required_error: "Παρακαλώ επιλέξτε πελάτη.",
     }),
-    TRNDATE: z.string({
-       
+    TRDPRSN: z.string({}).optional(),
+    TRNDATE: z.string({}).optional(),
+    FROMDATE: z.string({}).optional(),
+    ORDERBYNAME: z.string({}),
+    ACTOR: z.string({}).optional(),
+    ORDERBY: z.number({}),
+    REMARKS: z.string({
+        required_error: "Υποχρεωτικό πεδίο"
     }),
+    ACT: z.string({}),
+    COMMENTS: z.string({}).optional(),
 })
 
 
 
 
-export function AddForm({  }) {
-   
+export function AddForm({ }) {
+    const session = useSession();
+    console.log(session)
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
+          
             TRNDATE: format(new Date(), 'yyyy-MM-dd HH:mm'),
+            FROMDATE: format(new Date(), 'yyyy-MM-dd HH:mm'),
+            ORDERBYNAME: "Χρήστης",
+            ACTOR: '',
+            ACT: 'Ενεργό',
+            COMMENTS: '',
+            TRDPRSN: '',
+            TRDR: '',
+            REMARKS: ''
+            
         }
     })
+    const usersQuery = useQuery({
+        queryKey: ['users'],
+        queryFn: () => fetchUsers(),
+    })
 
+    //fetch data for the contacts dropdown, if the user has selected a client:
+    const contactsQuery = useQuery({
+        queryKey: [form.watch('TRDR')], 
+        queryFn: () =>  getCompanyContacts(form.watch('TRDR')),
+    })
+ 
+ 
+
+
+
+    //set default values for values coming from the session:
     useEffect(() => {
-        let client = form.watch('client')
-        console.log(client)
-    }, [form.watch('client')])
-
-    function onSubmit(data) {
-        console.log(data)
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
+        if(!session) return;
+        form.reset({
+            ORDERBYNAME: session?.data?.name,
+            ORDERBY: session?.data?.usercode,
         })
+    }, [session])
+
+   
+
+    //Final submit:
+   async function onSubmit(data) {
+        let formData = data;
+        delete formData['ACT']
+        const _data = {
+            ...formData ,
+            SERIES: "9060",
+            ORDERBYNAME: session?.data?.name,
+            ACTSTATUS: 1,
+            UTBL04: 400,
+            ACTSTATES: 1000,
+        }
+        let result = await handleSubmitTask(_data, session?.data?.clientID)
+        console.log('result')
+        console.log(result);
+        // console.log(_data)
     }
 
     return (
         <div className={styles.form}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                <div className='w-full gap-2 grid grid-cols-2'>
-                  < InputText 
-                    name="TRNDATE"
-                    label="Ημερομηνία καταχώρησης"
-                    placeholder="Ημερομηνία Έναρξης"
-                    control={form.control}
-                    disabled={true}
-                  />
-                  < InputText 
-                    name="TRNDATE"
-                    label="Ημερομηνία Έναρξης"
-                    placeholder="Ημερομηνία Έναρξης"
-                    control={form.control}
-                    disabled={true}
-                  />
-                </div>
-                    <div className='w-full gap-2 grid grid-cols-2'>
-                    < CustomDropSearch
-                    fetcher={getClients}
-                    label="Πελάτες"
-                    placeholder="Επιλογή Πελάτη"
-                     control={form.control} 
-                     form={form} 
-                     name="client"
-                    optionValue="TRDR"
-                    optionLabel="NAME"
-                     />
-                    < CustomDropdown
-                    disabled={!form.watch('client')}
-                    trdr={form.watch('client')}
-                    fetcher={getCompanyContacts}
-                    label="Eπαφές"
-                    placeholder="Eπαφή πελάτη"
-                     control={form.control} 
-                     form={form} 
-                     name="contacts"
-                        optionValue="TRDR"
-                        optionLabel="NAME"
-                     />
-                   
+                    <div className={styles.grid}>
+                        < InputText
+                            name="ORDERBYNAME"
+                            label="Εντολέας"
+                            control={form.control}
+                            disabled={true}
+                        />
+                      < CustomDropdown
+                            label="Χρήστες"
+                            placeholder="Επιλογή Χειριστή"
+                            control={form.control}
+                            form={form}
+                            name="ACTOR"
+                            optionValue="usercode"
+                            optionLabel="name"
+                            data={usersQuery.data}
+                        />
+                      
                     </div>
-                  
-                    <Button type="submit">Submit</Button>
+                    <div className={styles.grid}>
+                        < InputText
+                            name="TRNDATE"
+                            label="Ημερομηνία καταχώρησης"
+                            placeholder="Ημερομηνία Έναρξης"
+                            control={form.control}
+                            disabled={true}
+                        />
+                        < InputText
+                            name="FROMDATE"
+                            label="Ημερομηνία Έναρξης"
+                            placeholder="Ημερομηνία Έναρξης"
+                            control={form.control}
+                            disabled={true}
+                        />
+                    </div>
+                    <div className={styles.grid}>
+                        < CustomDropSearch
+                            fetcher={getClients}
+                            label="Πελάτες"
+                            placeholder="Επιλογή Πελάτη"
+                            control={form.control}
+                            form={form}
+                            name="TRDR"
+                            optionValue="TRDR"
+                            optionLabel="NAME"
+                        />
+
+                        < CustomDropdown
+                            disabled={!form.watch('TRDR')}
+                            label="Eπαφές"
+                            placeholder="Eπαφή πελάτη"
+                            control={form.control}
+                            form={form}
+                            name="TRDPRSN"
+                            optionValue="TRDPRSN"
+                            optionLabel="NAME"
+                            data={contactsQuery.data}
+                        />
+                    </div>
+                    <div className={styles.grid}>
+                        < TextArea
+                            name="REMARKS"
+                            label="Αναλυτική Περιγραφή"
+                            placeholder="Περιγραφή του task"
+                            control={form.control}
+                            rows={5} />
+                        < TextArea
+                            name="COMMENTS"
+                            label="Σχόλια"
+                            placeholder="Γράψτε το σχόλιο σας"
+                            control={form.control}
+                            rows={5} />
+                    </div>
+                    <div className={styles.grid}>
+                    < InputText
+                            name="ACT"
+                            label="Κατάσταση"
+                            control={form.control}
+                            disabled={true}
+                        />
+                    </div>
+                    <Button type="submit">Καταχώρηση</Button>
                 </form>
             </Form>
         </div>

@@ -19,17 +19,15 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {  useState } from 'react'
 import { Separator } from "@/components/ui/separator"
 
-import { useQuery } from '@tanstack/react-query'
 export function CustomDropdown({
     label, 
-    trdr, 
     placeholder, 
-    name, options, 
+    name, 
     optionLabel, 
     optionValue, 
     form, 
-    fetcher,
-    disabled
+    disabled,
+    data,
 }) {
     const [state, setState] = useState({
             search: '',
@@ -37,22 +35,6 @@ export function CustomDropdown({
             open: false,
     
         })
-    //tanstack infinite fetch hook options:
-    const {
-        data,  
-        status,
-        error,
-       
-    } = useQuery({
-        queryKey: [trdr],
-        queryFn: () =>  fetcher(trdr),
-    })
-
-  
-   
-   
-
-
 
     const content =data?.map((item, index) => {
             return (
@@ -93,7 +75,7 @@ export function CustomDropdown({
                             <PopoverTrigger asChild>
                                 <FormControl>
                                     <Button
-                                         disabled={disabled}
+                                         disabled={disabled || !data?.length}
                                         variant="outline"
                                         role="combobox"
                                         className={cn(
@@ -103,16 +85,18 @@ export function CustomDropdown({
                                     >
                                         {field.value ? (
                                             <>
-                                                {options.find((option) => option[optionValue] === field.value)[optionLabel]}
+                                                {data.find((option) => option[optionValue] === field.value)[optionLabel]}
                                             </>
-                                        ) : placeholder}
+                                        ) : (
+                                             placeholder || "Επιλογή..."
+                                        )}
                                         <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </FormControl>
                             </PopoverTrigger>
                             <PopoverContent align="start" className="w-[400px] p-0">
                                 
-                                <ScrollArea className="h-auto">
+                                <ScrollArea className={styles.dropdown}>
                                     {data?.length > 0 ? (
                                         content
                                     ) : (

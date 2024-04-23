@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import './style.css'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -36,31 +37,20 @@ export function SkeletonDemo() {
 const ProfileAvatar = () => {
   const router = useRouter();
 
-  const handleAvatarName = (firstName, lastName) => {
-    if (firstName && lastName) {
-      return firstName[0].toUpperCase() + lastName[0].toUpperCase()
-    }
-  }
+  
 
   const { data: session } = useSession();
-  // let initials = session ? session?.name.split(' ')[0][0] + session?.name.split(' ')[1][0] : '';
+  let initials = session && session.name ? session?.name.split(' ')[0][0] + session?.name.split(' ')[1][0] : '';
+
   return (
     <>
-      {/* {initials ? ( */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
               <div className='avatar_wrapper'>
                 <Button className='avatar'>
-                  {/* {initials} */}
-                  US
+                  {initials}
                 </Button>
-                {/* <div className="avatar_details">
-                  <div>
-                    <p className='text-sm font-medium leading-none'>{session?.name}</p>
-                    <p className='text-xs leading-none text-muted-foreground'>{session?.role}</p>
-                  </div>
-                  <FaAngleDown className='text-muted-foreground ml-2' />
-                </div> */}
+                
               </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mt-2 w-56" align="end" forceMount>
@@ -73,19 +63,11 @@ const ProfileAvatar = () => {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuGroup>
-              <DropdownMenuItem>
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Settings
-              </DropdownMenuItem>
-            </DropdownMenuGroup> */}
-            {/* <DropdownMenuSeparator /> */}
+           
             <DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 signOut({ redirect: false }).then(() => {
-                  router.push("/login"); // Redirect to the dashboard page after signing out
+                  router.push("/login"); 
                 });
               }}>
                 Logout
@@ -93,9 +75,7 @@ const ProfileAvatar = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      {/* ) : (
-        <SkeletonDemo />
-      )} */}
+   
     </>
 
 

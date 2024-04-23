@@ -3,6 +3,7 @@ import styles from './styles.module.css'
 import { CaretSortIcon, } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Search } from 'lucide-react'
 import {
     FormControl,
     FormField,
@@ -16,7 +17,6 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { getClients } from '@/app/actions'
 import { useInfiniteQuery, } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer';
@@ -25,12 +25,20 @@ import { Input } from "@/components/ui/input"
 
 import { Loader2 } from "lucide-react"
 
-export function CustomDropSearch({label, placeholder, name, options, optionLabel, optionValue, form, fetcher}) {
+export function CustomDropSearch({
+    label, 
+    placeholder, 
+    name,
+    optionLabel, 
+    optionValue, 
+    form, 
+    fetcher,
+}) {
     const { ref, inView } = useInView();
     const [state, setState] = useState({
             search: '',
             active: '',
-            option: placeholder,
+            option:placeholder,
             open: false,
     
         })
@@ -71,13 +79,17 @@ export function CustomDropSearch({label, placeholder, name, options, optionLabel
 
 
 
-    useEffect(() => {
-        console.log(data)
-    }, [data])
+ 
 
-
+   
     
-  
+    const handleClick = (client) => {
+      
+        form.setValue(name, client[optionValue])
+        setState(prev => ({...prev, active: client[optionValue], option: client[optionLabel]}))
+        handleOpenChange();
+        
+    }
 
     //Return the content after the data has loaded:
     const content = data?.pages.map((page, index) => {
@@ -90,9 +102,7 @@ export function CustomDropSearch({label, placeholder, name, options, optionLabel
                     <span
                         className={`${styles.item} ${state.active === client[optionValue] && styles.active}`}
                         onClick={() => {
-                            form.setValue(name, client[optionValue])
-                            setState(prev => ({...prev, active: client[optionValue], option: client[optionLabel]}))
-                            handleOpenChange();
+                            handleClick(client)
                         }}
                     >
                         {client[optionLabel]}
@@ -135,15 +145,16 @@ export function CustomDropSearch({label, placeholder, name, options, optionLabel
                                 </FormControl>
                             </PopoverTrigger>
                             <PopoverContent align="start" className="w-[400px] p-0">
-                                <div className='p-2'>
-                                    <Input
-                                        className="shadow-none  w-full"
-                                        label="search"
-                                        value={state.search}
-                                        onChange={handleSearchChange} />
-
+                                <div className={styles.searchInput}>
+                                  
+                                        <input 
+                                         placeholder='αναζήτηση'
+                                         value={state.search}
+                                        onChange={handleSearchChange}
+                                        />
+                                    <Search />
                                 </div>
-                                <ScrollArea className="max-h-[300px]">
+                                <ScrollArea className={styles.infiniteDropdown}>
                                     { content}
                                     {hasNextPage && (
                                           <div className="flex justify-center items-center h-[100px]">

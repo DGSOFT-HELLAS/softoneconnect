@@ -4,7 +4,7 @@ import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import connectMongo from '../../../../../server/models/config';
 import User from "../../../../../server/models/User";
-
+import { softoneLogin } from '@/app/actions';
 export const authOptions = {
     session: {
       strategy: 'jwt',
@@ -25,8 +25,6 @@ export const authOptions = {
             await connectMongo()
             const user = await User.findOne({ email: credentials.email })
             if (user === null) return;
-  
-          
             let password = user.password
             const match = await compare(credentials.password, password)
   
@@ -37,14 +35,18 @@ export const authOptions = {
               usercode: user.usercode,
             }, process.env.JWT_SECRET);
   
-  
+            let login = await softoneLogin(user.email)
+            console.log('login')
+            console.log(login)
+            
   
             if (match) {
               return {
                 email: user.email,
                 name: user.name,
                 usercode: user.usercode,
-                accessToken: accessToken
+                accessToken: accessToken,
+                clientID: login.clientID,
               }
             }
   

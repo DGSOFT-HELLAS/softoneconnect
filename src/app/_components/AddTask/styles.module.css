@@ -6,3 +6,17 @@
     border: 1px solid var(--border);
     margin: 0 auto;
 }
+
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+@media screen and (max-width: 1000px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

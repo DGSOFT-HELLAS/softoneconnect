@@ -9,3 +9,9 @@
 .active {
     background-color: var(--muted);
 }
+
+
+.dropdown {
+    max-height: 300px;
+    overflow-y: scroll;
+}

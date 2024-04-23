@@ -4,8 +4,43 @@
     display: block;
     cursor: pointer;
     font-size: 15px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
 }
 
 .active {
     background-color: var(--muted);
+}
+
+
+.infiniteDropdown {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.searchInput {
+    width: 100%;
+    font-size: 15px;
+    border: 1px solid var(--muted);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: relative;
+
+}
+.searchInput input {
+    width: 100%;
+    min-height: 40px;
+    padding-left: 30px;
+}
+
+.searchInput svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translateY(-50%);
+    color: var(--muted-foreground);
+
 }

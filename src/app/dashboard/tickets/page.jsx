@@ -32,7 +32,6 @@ const fetchData = async (url, usercode) => {
 
 const Page = async () => {
     const session = await getServerSession(authOptions);
-    console.log(session)
     let usercode = session?.usercode;
 
     

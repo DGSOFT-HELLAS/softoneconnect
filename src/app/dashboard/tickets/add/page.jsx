@@ -1,31 +1,17 @@
 import { AddForm } from "@/app/_components/AddTask/form"
-import translateData from "@/utils/translateData"
-
-async function fetchClients() {
-    const response = await fetch('https://dgsoft.oncloud.gr/s1services/JS/DGHUB/TrdrCallHub', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            offset:1
-        }),
-         next: { revalidate: 600 } 
-    })
-    let data = await translateData(response)
-    return data.result;
-
-}
+import axios from 'axios'
 
 
 export default async function Page() {
-    const clientsPromise = fetchClients();
-    const [clients] = await Promise.all([clientsPromise]);
     
 
     return (
         <div>
-            <AddForm  clients={clients}/>
+              <div className="mb-4">
+                <h2 className="text-xl font-bold">📜 Nέο Τask!</h2>
+                <h3 className="task_subheader">Κάντε μία νέα καταχώρηση</h3>
+            </div>
+            <AddForm />
         </div>
     )
 }
