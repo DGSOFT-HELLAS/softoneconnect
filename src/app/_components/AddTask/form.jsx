@@ -98,7 +98,6 @@ export function AddForm({ }) {
         let result = await handleSubmitTask(_data, session?.data?.clientID)
         console.log('result')
         console.log(result);
-        // console.log(_data)
     }
 
     return (
@@ -118,7 +117,7 @@ export function AddForm({ }) {
                             control={form.control}
                             form={form}
                             name="ACTOR"
-                            optionValue="usercode"
+                            optionValue="code"
                             optionLabel="name"
                             data={usersQuery.data}
                         />

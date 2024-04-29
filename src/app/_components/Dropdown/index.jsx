@@ -29,6 +29,7 @@ export function CustomDropdown({
     disabled,
     data,
 }) {
+    console.log(data)
     const [state, setState] = useState({
             search: '',
             active: '',
@@ -94,7 +95,7 @@ export function CustomDropdown({
                                     </Button>
                                 </FormControl>
                             </PopoverTrigger>
-                            <PopoverContent align="start" className="w-[400px] p-0">
+                            <PopoverContent align="start" className="w-[300px] p-0">
                                 
                                 <ScrollArea className={styles.dropdown}>
                                     {data?.length > 0 ? (

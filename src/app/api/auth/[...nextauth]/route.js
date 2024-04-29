@@ -27,7 +27,8 @@ export const authOptions = {
             if (user === null) return;
             let password = user.password
             const match = await compare(credentials.password, password)
-  
+            console.log('match')
+            console.log(match) 
   
             const accessToken = jwt.sign({
               email: user.email,
@@ -40,7 +41,7 @@ export const authOptions = {
             console.log(login)
             
   
-            if (match) {
+            if (match && login?.users) {
               return {
                 email: user.email,
                 name: user.name,

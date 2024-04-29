@@ -68,7 +68,7 @@ export async function handleSubmitTask(data, clientID) {
             service: "setData",
             clientID: clientID,
             appId: "3000",
-            OBJECT: "SOACTION",
+            OBJECT: "SOTASK",
             data: {
             SOACTION: [
                 data
@@ -78,6 +78,7 @@ export async function handleSubmitTask(data, clientID) {
     })
     try {
         let _data = await translateData(response)
+        console.log(_data)
         return _data;
     } catch(e) {
         console.log(e)
@@ -86,6 +87,7 @@ export async function handleSubmitTask(data, clientID) {
 
 
 export async function softoneLogin(email) {
+    console.log(email)
     const response = await fetch(`${process.env.NEXT_PUBLIC_SOFTONE}/LoginDGHUB`, {
         method: 'POST',
         headers: {
@@ -93,9 +95,9 @@ export async function softoneLogin(email) {
         },
         body: JSON.stringify({
             username: email
-           
         }),
     })
     let data = await translateData(response)
+    console.log(data)
     return data;
 }
