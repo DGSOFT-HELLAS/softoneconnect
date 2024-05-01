@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { ChevronLeft, ChevronDown, Gauge } from 'lucide-react'
+import { ChevronLeft, ChevronDown, Gauge, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { getServerSession } from "next-auth/next"
@@ -9,6 +9,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import SignOut from './signOut'
 const navConfig = [
     {
         title: 'Dashboard',
@@ -79,21 +80,26 @@ export default async function SidebarLayout({ children }) {
                         })}
                     </ul>
                 </div>
-                <div className={styles.footer}>
-                    <Popover>
-                        <PopoverTrigger>
-                        <div className={styles.avatar} >
-                        {name && name[0]}
-                    </div>
-                    <span>{name}</span>
-                    <span>
-                        <ChevronDown className='w-4 h-4 text-muted-foreground' />
-                    </span>
-                        </PopoverTrigger>
-                        <PopoverContent>Place content for the popover here.</PopoverContent>
-                    </Popover>
-                  
-                </div>
+                <Popover>
+                    <PopoverTrigger>
+                        <div className={styles.footer}>
+                            <div className={styles.avatar} >
+                                {name && name[0]}
+                            </div>
+                            <span>{name}</span>
+                            <span>
+                                <ChevronDown className='w-4 h-4 text-muted-foreground' />
+                            </span>
+                        </div>
+
+                    </PopoverTrigger>
+                    <PopoverContent
+                        className={'w-[240px]'}
+                    >
+                       < SignOut />
+                    </PopoverContent>
+                </Popover>
+
             </aside>
             <section className={styles.main}>
                 {children}

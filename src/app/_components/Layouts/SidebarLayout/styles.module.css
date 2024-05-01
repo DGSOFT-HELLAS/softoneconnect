@@ -2,7 +2,7 @@
 
 .container {
     display: flex;
-    z-index: 1000;
+   
 }
 
 .sidebar {
@@ -13,11 +13,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: -1;
     transition: 0.5s;
     background-color: var(--card);
     display: flex;
     flex-direction: column;
+
 }
 
 
@@ -73,6 +74,7 @@
 }
 .logoTextContainer {
     font-size: 14px;
+
 }
 
 .logoContainer p {
@@ -115,6 +117,22 @@
     justify-content: center;
 
 }
+
+
+.logout {
+    display: flex;
+    column-gap: 10px;
+    height: 40px;
+    align-items: center;
+    padding-left: 10px;
+    border-radius: var(--radius);
+}
+
+.logout:hover {
+    cursor: pointer;
+    background-color: var(--card);
+}
+
 
 .navItem {
     display: flex;
