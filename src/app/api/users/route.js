@@ -39,6 +39,8 @@ export async function POST(req) {
     await connectMongo();
     try {
         let users = await User.find()
+        console.log('users')
+        console.log(users)
         response.result = users;
         response.success = true;
     } catch (e) {

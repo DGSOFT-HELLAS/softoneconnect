@@ -26,10 +26,9 @@ export function CustomDropdown({
     optionLabel, 
     optionValue, 
     form, 
-    disabled,
+    disabled = false,
     data,
 }) {
-    console.log(data)
     const [state, setState] = useState({
             search: '',
             active: '',

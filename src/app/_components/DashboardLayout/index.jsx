@@ -2,7 +2,7 @@
 import { Nav } from "./nav"
 import { SidebarItems } from "./sidebar"
 
-export default function DashboardLayout({children}) {
+export default function DashboardLayout({ children }) {
     return (
         <section className="dash_wrapper">
             <Nav />
@@ -10,8 +10,7 @@ export default function DashboardLayout({children}) {
                 <SidebarItems />
                 <main className="main">
                     <div>
-                {children}
-
+                        {children}
                     </div>
                 </main>
             </section>

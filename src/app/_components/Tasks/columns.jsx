@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { ArrowUpDown, MoreHorizontal, Plus} from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, Plus, Pencil} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useModalStore } from "@/store"
+
 import styles from "./styles.module.css"
 import {
     DropdownMenu,
@@ -13,7 +14,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
-
+import ActStateModal from "./ActstateModal"
+import { FaSmileBeam } from "react-icons/fa"
+import { size } from "lodash"
 export const columnCalls = [
     {
         id: "select",
@@ -109,31 +112,41 @@ export const columnCalls = [
         },
     },
 ]
+
+
+
+
 export const taskColumns = [
-    {
-        id: "select",
-        enableResizing: false,
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                className="mr-6"
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
+    // {
+    //     id: "select",
+    //     enableResizing: false,
+    //     header: ({ table }) => (
+    //         <Checkbox
+    //             checked={
+    //                 table.getIsAllPageRowsSelected() ||
+    //                 (table.getIsSomePageRowsSelected() && "indeterminate")
+    //             }
+    //             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+    //             aria-label="Select all"
+    //         />
+    //     ),
+    //     cell: ({ row }) => (
+    //         <Checkbox
+    //             className="mr-6"
+    //             checked={row.getIsSelected()}
+    //             onCheckedChange={(value) => row.toggleSelected(!!value)}
+    //             aria-label="Select row"
+    //         />
+    //     ),
+    //     enableSorting: false,
+    //     enableHiding: false,
+    // },
+    {accessorKey: "SOACTION",
+    header: "SOACTION",
+    size: 10,
+    // enableHiding: true,
+
+},
     {
         accessorKey: "ACTOR",
         header: "ACTOR",
@@ -145,27 +158,40 @@ export const taskColumns = [
     {
         accessorKey: "CUSTOMER",
         header: "Πελάτης",
-        cell: ({ row }) => <div>{row.getValue("CUSTOMER")}</div>,
+        size: 800,
+        cell: ({ row }) => <div>
+            <span className="text-sm">
+            {row.getValue("CUSTOMER")}
+            </span>
+        </div>,
     },
     {
         accessorKey: "SOACTIONCODE",
+        size: 20,
+
         header: ({ column }) => {
             return (
               <Button
                 variant="ghost"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               >
-               SOACTION
+               Κωδικός
                 <ArrowUpDown className="ml-2 h-4 w-4" />
               </Button>
             )
           },
-        cell: ({ row }) => <Soaction row={row} />,
+        cell: ({ row }) => (
+            <div >
+               <span className="text-xs text-muted-foreground">
+               {row.getValue("SOACTIONCODE")}
+               </span>
+            </div>
+        ),
     },
     {
         accessorKey: "ACTSTATES",
         header: "ACTSTATES",
-        cell: ({ row }) => <div >{row.getValue("ACTSTATES")}</div>,
+        cell: ({ row }) => <ActStates row={row} value={row.getValue("ACTSTATES")} />,
     },
     {
         accessorKey: "ACTSTATUS",
@@ -176,6 +202,7 @@ export const taskColumns = [
 
     {
         id: "actions",
+        size: 10,
         enableHiding: false,
         cell: ({ row }) => {
            
@@ -232,6 +259,7 @@ const Soaction = ({ row }) => {
 }
 
 const Status = ({ row }) => {
+ 
     let value = row.getValue("ACTSTATUS")
     let statusState;
     switch (value) {
@@ -245,10 +273,18 @@ const Status = ({ row }) => {
 
     }
     return (
-        <div >
             <span className={`${styles.status}  ${statusState}`}>
                 {value}
             </span>
-        </div>
+    )
+}
+
+
+const ActStates= ({row}) => {
+    let value = row.getValue("ACTSTATES")
+    let soaction = row.getValue("SOACTION")
+    return (
+       
+        <ActStateModal ACTSTATES={value} SOACTION={soaction} />
     )
 }

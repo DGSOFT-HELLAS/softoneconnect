@@ -13,7 +13,9 @@ const fetchData = async (url, usercode) => {
             method: 'POST',
             body: JSON.stringify({
                 usercode: usercode
+
             })
+        
         });
 
         const _data = await translateData(response);
@@ -46,7 +48,8 @@ const Page = async () => {
     const tasksPromise = fetchData('testCRMWebTaskClient', usercode );
     const [calls, tasks] = await Promise.all([callsPromise, tasksPromise]);
 
-    
+
+
     return (
         <>
             <div className="mb-4">

@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {  ToastContainer } from 'react-toastify';
 import ClientSessionProvider from "./_components/ClientSessionProvider";
 import TanstackProvider from "./_components/TansStackProvider";
+import { Toaster } from "@/components/ui/toaster"
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400", "500", "700"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children, session, ...pageProps }) {
     <ClientSessionProvider  >
       <TanstackProvider>
       <body className={roboto.className}>
+      <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

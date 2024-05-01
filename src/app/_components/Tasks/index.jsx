@@ -27,7 +27,9 @@ import { FacetedFilter } from './faceterFilter'
 
 
 const useCustomTable = (data, columns) => {
-    const [columnVisibility, setColumnVisibility] = useState({})
+    const [columnVisibility, setColumnVisibility] = useState({
+        // SOACTION: false,
+    })
     const [rowSelection, setRowSelection] = useState({})
     const [sorting, setSorting] = useState([])
     const [columnFilters, setColumnFilters] = useState()
@@ -35,6 +37,7 @@ const useCustomTable = (data, columns) => {
     const table = useReactTable({
         data,
         columns,
+        
         state: {
             sorting,
             columnVisibility,
@@ -62,12 +65,12 @@ const useCustomTable = (data, columns) => {
 export default function Tasks({ calls, tasks, user }) {
     const tableTasks = useCustomTable(tasks, taskColumns);
     const tableCalls = useCustomTable(calls, columnCalls);
-
+    
     return (
         <div >
-
-            <Tabs defaultValue="tasks" className="w-full">
-                <TabsList>
+            <Tabs 
+            defaultValue="tasks" className="w-full">
+                <TabsList className=" bg-card">
                     <TabsTrigger value="tasks">Tasks</TabsTrigger>
                     <TabsTrigger value="calls">Calls</TabsTrigger>
                 </TabsList>
@@ -78,12 +81,11 @@ export default function Tasks({ calls, tasks, user }) {
                 </TabsContent>
                 <TabsContent value="calls">
                     <TasksTable  user={user} data={calls} columns={columnCalls} table={tableCalls}>
-                        <FacetedFilter 
+                        {/* <FacetedFilter 
                             column={tableTasks.getColumn("ACTSTATUS")} 
                             options={['Το Do', 'StandBy', 'Waiting from customer']} 
                             title="Κατάσταση"
-                        />
-
+                        /> */}
                     </TasksTable>
                 </TabsContent>
             </Tabs>
@@ -101,13 +103,13 @@ const TastToolbar = ({ table }) => {
             table.getColumn("ACTSTATES")?.setFilterValue(event)
         }}
         >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-background">
                 <SelectValue placeholder="Φίτρο Κατάστασης" />
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>Κατάσταση</SelectLabel>
-                    <SelectItem value="Το Do">Το Do</SelectItem>
+                    <SelectItem value="To Do">Το Do</SelectItem>
                     <SelectItem value="StandBy">StandBy</SelectItem>
                     <SelectItem value="Waiting from customer">Waiting from customer</SelectItem>
                     <SelectItem value={null}>All</SelectItem>

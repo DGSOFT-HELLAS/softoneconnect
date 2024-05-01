@@ -78,13 +78,14 @@
 
 .main {
   width: 100%;
-    
+  overflow-y: scroll;
+
 }
 
 .main > div {
     margin: 0 auto;
-    max-width: 1300px;
-    overflow-y: scroll;
+    height: 100%;
+    max-width: 1500px;
     padding: 2%;
     flex: 1;
     height: calc(100vh - 60px);

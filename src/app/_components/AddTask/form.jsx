@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
-import { toast } from "@/components/ui/use-toast"
 import { CustomDropSearch } from '../InfiniteDropdownWithSearch'
 import { useSession } from 'next-auth/react'
 import { format } from 'date-fns'
@@ -17,8 +16,14 @@ import { TextArea } from '../Inputs/TextArea'
 import { useQuery } from '@tanstack/react-query'
 import { fetchUsers } from '@/app/actions'
 import { handleSubmitTask } from '@/app/actions'
-const FormSchema = z.object({
+import { useRouter } from 'next/navigation'
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast"
 
+
+
+
+const FormSchema = z.object({
     TRDR: z.string({
         required_error: "Παρακαλώ επιλέξτε πελάτη.",
     }),
@@ -39,12 +44,12 @@ const FormSchema = z.object({
 
 
 export function AddForm({ }) {
+    const { toast } = useToast();
     const session = useSession();
-    console.log(session)
+    const router = useRouter();
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-          
             TRNDATE: format(new Date(), 'yyyy-MM-dd HH:mm'),
             FROMDATE: format(new Date(), 'yyyy-MM-dd HH:mm'),
             ORDERBYNAME: "Χρήστης",
@@ -52,9 +57,7 @@ export function AddForm({ }) {
             ACT: 'Ενεργό',
             COMMENTS: '',
             TRDPRSN: '',
-            TRDR: '',
-            REMARKS: ''
-            
+
         }
     })
     const usersQuery = useQuery({
@@ -64,31 +67,31 @@ export function AddForm({ }) {
 
     //fetch data for the contacts dropdown, if the user has selected a client:
     const contactsQuery = useQuery({
-        queryKey: [form.watch('TRDR')], 
-        queryFn: () =>  getCompanyContacts(form.watch('TRDR')),
+        queryKey: [form.watch('TRDR')],
+        queryFn: () => getCompanyContacts(form.watch('TRDR')),
     })
- 
- 
+
+
 
 
 
     //set default values for values coming from the session:
     useEffect(() => {
-        if(!session) return;
+        if (!session) return;
         form.reset({
             ORDERBYNAME: session?.data?.name,
             ORDERBY: session?.data?.usercode,
         })
     }, [session])
 
-   
+
 
     //Final submit:
-   async function onSubmit(data) {
+    async function onSubmit(data) {
         let formData = data;
         delete formData['ACT']
         const _data = {
-            ...formData ,
+            ...formData,
             SERIES: "9060",
             ORDERBYNAME: session?.data?.name,
             ACTSTATUS: 1,
@@ -96,8 +99,20 @@ export function AddForm({ }) {
             ACTSTATES: 1000,
         }
         let result = await handleSubmitTask(_data, session?.data?.clientID)
-        console.log('result')
-        console.log(result);
+        if (result.success) {
+            toast({
+                title: "Επιτυχία Καταχώρησης",
+                description: "Θα επιστρέψετε στην λίστα των tasks σε λίγο.",
+                type: 'error'
+            })
+            router.push('/dashboard/tickets')
+        } else {
+            toast({
+                title: "Σφάλμα καταχώρησης",
+                description: "Παρακαλώ προσπαθήστε ξανά.",
+                type: 'error'
+            })
+        }
     }
 
     return (
@@ -111,7 +126,7 @@ export function AddForm({ }) {
                             control={form.control}
                             disabled={true}
                         />
-                      < CustomDropdown
+                        < CustomDropdown
                             label="Χρήστες"
                             placeholder="Επιλογή Χειριστή"
                             control={form.control}
@@ -119,9 +134,10 @@ export function AddForm({ }) {
                             name="ACTOR"
                             optionValue="code"
                             optionLabel="name"
+                            disabled={false}
                             data={usersQuery.data}
                         />
-                      
+
                     </div>
                     <div className={styles.grid}>
                         < InputText
@@ -178,14 +194,17 @@ export function AddForm({ }) {
                             rows={5} />
                     </div>
                     <div className={styles.grid}>
-                    < InputText
+                        < InputText
                             name="ACT"
                             label="Κατάσταση"
                             control={form.control}
                             disabled={true}
                         />
                     </div>
-                    <Button type="submit">Καταχώρηση</Button>
+                    <div className='flex gap-2'>
+                        <Button type="submit">Καταχώρηση</Button>
+                        <Button onClick={() => router.push('/dashboard/tickets')} className='mr-4' variant="secondary">Ακύρωση</Button>
+                    </div>
                 </form>
             </Form>
         </div>

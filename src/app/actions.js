@@ -1,7 +1,13 @@
 
 "use server"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next"
+
 import axios from "axios";
 import translateData from "@/utils/translateData";
+
+
+
 export async function getClients(pageParam, search) {
   
     const response = await fetch(`${process.env.NEXT_PUBLIC_SOFTONE}/TrdrCallHub`, {
@@ -99,5 +105,34 @@ export async function softoneLogin(email) {
     })
     let data = await translateData(response)
     console.log(data)
+    return data;
+}
+
+
+
+export async function changeStatus(SOACTION, ACTSTATUS) {
+    const session = await getServerSession(authOptions);
+    let clientID = session?.clientID;
+    const response = await fetch(`http://dgsoft.oncloud.gr/s1services`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            service: "setData",
+            clientID: clientID,
+            appId: "3000",
+            OBJECT: "SOTASK",
+            KEY: SOACTION, // το soaction
+            data: {
+                SOACTION: [
+                    {
+                        ACTSTATUS : ACTSTATUS
+                    }
+                ]}
+        }),
+    })
+    let data = await translateData(response)
+    
     return data;
 }

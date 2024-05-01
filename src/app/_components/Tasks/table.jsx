@@ -64,7 +64,6 @@ export default function TasksTable({ columns, children, table, user }) {
     return (
         <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
-
                 <SelectUser user={user} value={value} handleValueChange={handleValueChange} />
             </div>
             <div className={styles.tableBody}>
@@ -98,7 +97,9 @@ export default function TasksTable({ columns, children, table, user }) {
                     </DropdownMenu>
                 </div>
                 <div className="rounded-md border">
-                    <Table>
+                    <Table
+                    
+                    >
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
@@ -126,6 +127,9 @@ export default function TasksTable({ columns, children, table, user }) {
                                     >
                                         {row.getVisibleCells().map((cell, index, array) => (
                                             <TableCell
+                                            style={{
+                                                width: cell.column.getSize()
+                                              }}
                                                 className={index !== array.length - 1 ? "border-r" : ""} key={cell.id}>
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
@@ -183,10 +187,11 @@ export default function TasksTable({ columns, children, table, user }) {
 function SelectUser({ value, handleValueChange, user }) {
     return (
             <Select
+                className="e"
                 onValueChange={(event) => handleValueChange(event)}
                 value={value}
             >
-                <SelectTrigger className="w-[200px] flex items-center">
+                <SelectTrigger className="w-[200px] flex items-center bg-background">
                     <SelectValue  placeholder={"Επιλογή Χρήστη"} />
                 </SelectTrigger>
                 <SelectContent>
