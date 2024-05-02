@@ -7,13 +7,11 @@
 
 .sidebar {
     border-right: 1px solid var(--border);
-    width: 250px;
     height: 100%;
     background-color: #f5f5f5;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -1;
     transition: 0.5s;
     background-color: var(--card);
     display: flex;
@@ -21,6 +19,13 @@
 
 }
 
+.sidebarOpen {
+    width: 250px;
+}
+
+.sidebarClose {
+    width: 90px;
+}
 
 .main {
     margin-left: 250px;
@@ -42,15 +47,16 @@
 
 
 .toggle {
+    pointer-events: auto;
     position: absolute;
     right: -13px;
+    z-index: 9000;
     /* bottom: -12px; */
     top: 50%;
     transform: translateY(-50%);
     border-radius: 6px;
     width: 30px;
     height: 30px;
-    z-index: 1000;
     background-color: var(--background);
     border: 1px solid var(--border);
     cursor: pointer;
@@ -64,16 +70,18 @@
 .logoInitials {
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.034);
     background-color: rgb(52, 52, 172);
-    width: 40px;
-    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
+
 }
 .logoTextContainer {
     font-size: 14px;
+    text-wrap: nowrap;
 
 }
 
@@ -101,16 +109,16 @@
     height: 60px;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 20px;
     column-gap: 10px;
-
     border-top: 1px solid var(--border);
 }
 
 .avatar {
     background-color: var(--secondary);
-    width: 30px;
-    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -133,23 +141,32 @@
     background-color: var(--card);
 }
 
-
+.navContainerOpen {
+    align-items: center;
+}
 .navItem {
     display: flex;
     align-items: center;
     column-gap: 10px;
     margin-bottom: 5px;
     min-height: 35px;
-    padding-left: 10px;
+    padding-left: 10px; 
     margin-left: -10px;
-
 }
+
+
 
 .navItem:hover {
     background-color: var(--background);
     border-radius: 6px;
     cursor: pointer;
  
+}
+
+.navItemClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .divider {
@@ -160,6 +177,15 @@
 
 }
 
+
+.dividerLine {
+    width: 80%;
+    height: 1px;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: var(--border);
+}
 
 
 .navItemTitle {

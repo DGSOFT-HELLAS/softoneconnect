@@ -1,4 +1,3 @@
-import CustomReport from "../_components/CustomReportTable"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AuthComponent from "../_components/AuthComponent";
@@ -12,7 +11,7 @@ export default async function Page() {
     }
     return (
         <div>
-            <CustomReport />
+            hello
         </div>
     )
 }

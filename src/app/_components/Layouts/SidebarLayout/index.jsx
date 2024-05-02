@@ -1,15 +1,20 @@
+'use client'
 import styles from './styles.module.css'
-import { ChevronLeft, ChevronDown, Gauge, LogOut } from 'lucide-react'
+import { ChevronLeft, ChevronDown, Gauge, LogOut, ClipboardList, Settings } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// import { getServerSession } from "next-auth/next"
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { useSession } from 'next-auth/react'
+
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
 import SignOut from './signOut'
+import ToggleSidebar from './toggleSidebar'
+import { sidebarStore } from '@/store'
 const navConfig = [
     {
         title: 'Dashboard',
@@ -21,14 +26,9 @@ const navConfig = [
         title: 'MENU'
     },
     {
-        title: 'Dashboard',
-        path: '#',
-        icon: <Gauge />,
-    },
-    {
         title: 'Εργασίες',
         path: '#',
-        icon: <Gauge />,
+        icon: <ClipboardList />,
     },
     {
         divider: true,
@@ -37,45 +37,63 @@ const navConfig = [
     {
         title: 'Ρυθμίσεις',
         path: '#',
-        icon: <Gauge />,
+        icon: <Settings />,
     },
 
 
 ]
 
 
-export default async function SidebarLayout({ children }) {
-    const session = await getServerSession(authOptions);
-    console.log(session)
-    const name = session?.name;
+export default  function SidebarLayout({ children }) {
+    const { openSidebar, setOpenSidebar } = sidebarStore()
+
+    
+    const session = useSession();
+    const name = session?.data?.name;
     return (
         <section className={styles.container}>
-            <aside className={styles.sidebar}>
+            <aside className={`${styles.sidebar} ${openSidebar ? styles.sidebarOpen : styles.sidebarClose}` }>
                 <div className={styles.logoContainer}>
                     <div className={styles.logoInitials}>
                         DG
                     </div>
-                    <div className={styles.logoTextContainer}>
-                        <p>DGSOFT Dashboard</p>
-                        <span>Workplace</span>
-                    </div>
-                    <div className={styles.toggle}>
-                        <ChevronLeft className='w-4 h-4' />
-                        {/* <ChevronRight /> */}
-                    </div>
+                    {openSidebar ? (
+                          <div onClick={() => console.log('logo click')} className={styles.logoTextContainer}>
+                          <p>DGSOFT Dashboard</p>
+                          <span>Workplace</span>
+                      </div>
+                    ) : null}
+                  
+                   <ToggleSidebar />
                 </div>
                 <div className={styles.sidebarNav}>
-                    <ul className={styles.navContainer}>
+                    <ul className={ `${styles.navContainer} ${openSidebar ? styles.navContainerOpen : null }`}>
                         {navConfig.map((item, index) => {
-                            if (item.divider) {
-                                return <li key={index} className={styles.divider}>{item.title}</li>
-                            }
+                            // if (item.divider) {
+                            //     return (
+                            //         <>
+                            //          {openSidebar ? (
+                            //             <li key={index} className={styles.divider}>{item.title}</li>
+                            //          ) : (
+                            //             <li key={index} className={styles.dividerLine}></li>
+                            //          )}
+                            //         </>
+                            //     )
+                            // }
                             return (
-                                <NavItem
-                                    key={index}
-
-                                    item={item}
-                                />
+                                <>
+                                    {openSidebar ? (
+                                        <NavItem
+                                        key={index}
+                                        item={item}
+                                    />
+                                    ) : (
+                                        <NavClosed
+                                        key={index}
+                                        item={item} 
+                                        />
+                                    )}
+                                </>
                             )
                         })}
                     </ul>
@@ -86,12 +104,17 @@ export default async function SidebarLayout({ children }) {
                             <div className={styles.avatar} >
                                 {name && name[0]}
                             </div>
-                            <span>{name}</span>
-                            <span>
+                            { openSidebar ? (
+                              <>
+                                  <span>{name}</span>
+                                <span>
                                 <ChevronDown className='w-4 h-4 text-muted-foreground' />
                             </span>
+                              </>
+                            ) : null }
+                          
+                           
                         </div>
-
                     </PopoverTrigger>
                     <PopoverContent
                         className={'w-[240px]'}
@@ -111,23 +134,46 @@ export default async function SidebarLayout({ children }) {
 
 
 const NavItem = ({ key, item }) => {
+    const { openSidebar } = sidebarStore()
     let { path, icon, title, divider } = item
-    if (divider) {
+    if (divider ) {
         return (
-            <li key={key} className={styles.divider}>{title.toUpperCase()}</li>
+              <li  className={styles.divider}>{title}</li>
         )
     }
     return (
         <li key={key} >
             <Link href={path} className={styles.navItem}>
                 <span className={styles.icon}>
-                    {/* <Icon  className="w-5 h-5"/> */}
                     {React.cloneElement(icon, { style: { width: '19px', height: '19px' } })}
                 </span>
-                <span className={styles.navItemTitle}>
-                    {title}
+                     <span className={styles.navItemTitle}>
+                     {title}
+                 </span>
+               
+            </Link>
+        </li>
+    )
+}
+const NavClosed = ({ key, item }) => {
+    let { path, icon, title, divider } = item
+    if (divider ) {
+        return (
+            <>
+              <li  className={styles.dividerLine}></li>
+            </>
+        )
+    }
+    return (
+        <li key={key} >
+            <Link href={path} className={styles.navItemClose}>
+                <span className={styles.icon}>
+                    {React.cloneElement(icon, { style: { width: '19px', height: '19px' } })}
                 </span>
             </Link>
         </li>
     )
 }
+
+
+
