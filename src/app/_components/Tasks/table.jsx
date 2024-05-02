@@ -2,14 +2,11 @@
 import React, { use, useEffect, useRef, useState } from "react"
 import {
     flexRender,
-
 } from "@tanstack/react-table"
-import { ReloadIcon } from "@radix-ui/react-icons"
 
-import { SlidersHorizontal, ChevronRight, ChevronLeft } from "lucide-react"
+import { SlidersHorizontal, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight } from "lucide-react"
 import styles from "./styles.module.css"
 import { Button } from "@/components/ui/button"
-
 import {
     Select,
     SelectContent,
@@ -46,14 +43,13 @@ import {
 
 import {
     Avatar,
-
     AvatarImage,
 } from "@/components/ui/avatar"
 
 
 export default function TasksTable({ columns, children, table, user }) {
     const [value, setValue] = useState(null)
-
+    const [pageSize, setPageSize] = useState(10)
 
 
 
@@ -97,9 +93,7 @@ export default function TasksTable({ columns, children, table, user }) {
                     </DropdownMenu>
                 </div>
                 <div className="rounded-md border">
-                    <Table
-                    
-                    >
+                    <Table>
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
@@ -127,9 +121,9 @@ export default function TasksTable({ columns, children, table, user }) {
                                     >
                                         {row.getVisibleCells().map((cell, index, array) => (
                                             <TableCell
-                                            style={{
-                                                width: cell.column.getSize()
-                                              }}
+                                                style={{
+                                                    width: cell.column.getSize()
+                                                }}
                                                 className={index !== array.length - 1 ? "border-r" : ""} key={cell.id}>
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
@@ -152,12 +146,29 @@ export default function TasksTable({ columns, children, table, user }) {
                         </TableBody>
                     </Table>
                 </div>
-                <div className="flex items-center justify-end space-x-2 py-4">
-                    <div className="flex-1 text-sm text-muted-foreground">
-                        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                        {table.getFilteredRowModel().rows.length} row(s) selected.
-                    </div>
-                    <div className="space-x-2">
+
+                <div className="flex items-center justify-between space-x-2 py-4">
+                    <Select onValueChange={(rowNum) => table.setPageSize(Number(rowNum))} value={table.getState().pagination.pageSize}>
+                        <SelectTrigger className="w-[80px]">
+                            <SelectValue placeholder="Theme" defaultValue={table.getState().pagination.pageSize} onValueChange={() => {
+                                table.setPageSize(Number(e.target.value))
+                            }} />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {[10, 20, 30, 40, 50].map(pageSize => (
+                            <SelectItem key={pageSize} value={pageSize} onValueChange={() =>table.setPageSize(Number(e.target.value))}>{pageSize}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    <div className={styles.paginationContainer}>
+
+                        <Button
+                            variant="outline" size="icon"
+                            onClick={() => table.setPageIndex(0)}
+                            disabled={!table.getCanPreviousPage()}
+                        >
+                            <ChevronsLeft className="h-4 w-4" />
+                        </Button>
                         <Button
                             variant="outline" size="icon"
                             onClick={() => table.previousPage()}
@@ -165,12 +176,27 @@ export default function TasksTable({ columns, children, table, user }) {
                         >
                             <ChevronLeft className="h-4 w-4" />
                         </Button>
+                        <span className="flex items-center gap-1 text-sm">
+                            <div>Σελίδα</div>
+                            <strong>
+                                {table.getState().pagination.pageIndex + 1}
+                            </strong>
+                            από{' '}
+                            <strong>{table.getPageCount()}</strong>
+                        </span>
                         <Button
                             variant="outline" size="icon"
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
                         >
                             <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="outline" size="icon"
+                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                            disabled={!table.getCanNextPage()}
+                        >
+                            <ChevronsRight className="h-4 w-4" />
                         </Button>
                     </div>
                     <EditDialog />
@@ -186,63 +212,63 @@ export default function TasksTable({ columns, children, table, user }) {
 
 function SelectUser({ value, handleValueChange, user }) {
     return (
-            <Select
-                className="e"
-                onValueChange={(event) => handleValueChange(event)}
-                value={value}
-            >
-                <SelectTrigger className="w-[200px] flex items-center bg-background">
-                    <SelectValue  placeholder={"Επιλογή Χρήστη"} />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup >
-                        <SelectLabel >Actor</SelectLabel>
-                        <SelectItem value={user?.name}>
-                            <span className="flex ">
-                                <Avatar className="w-[15px] h-[15px] mr-2">
-                                    <AvatarImage src="/avatar1.png" alt="agent" />
-                                </Avatar>
-                                <span className="text-xs">
-                                    {user > 40 ? user?.name.slice(0, 35) + '...' : user?.name}
-                                </span>
+        <Select
+            className="e"
+            onValueChange={(event) => handleValueChange(event)}
+            value={value}
+        >
+            <SelectTrigger className="w-[200px] flex items-center bg-background">
+                <SelectValue placeholder={"Επιλογή Χρήστη"} />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup >
+                    <SelectLabel >Actor</SelectLabel>
+                    <SelectItem value={user?.name}>
+                        <span className="flex ">
+                            <Avatar className="w-[15px] h-[15px] mr-2">
+                                <AvatarImage src="/avatar1.png" alt="agent" />
+                            </Avatar>
+                            <span className="text-xs">
+                                {user > 40 ? user?.name.slice(0, 35) + '...' : user?.name}
                             </span>
-                        </SelectItem>
-                        <SelectItem value="TECH">
-                            <span className="flex ">
-                                <Avatar className="w-[15px] h-[15px] mr-2">
-                                    <AvatarImage src="/avatar2.png" alt="agent" />
-                                </Avatar>
-                                <span className="text-xs">
-                                    TECH
-                                </span>
+                        </span>
+                    </SelectItem>
+                    <SelectItem value="TECH">
+                        <span className="flex ">
+                            <Avatar className="w-[15px] h-[15px] mr-2">
+                                <AvatarImage src="/avatar2.png" alt="agent" />
+                            </Avatar>
+                            <span className="text-xs">
+                                TECH
                             </span>
-                        </SelectItem>
-                        <SelectItem value="CUSTOM">
-                            <span className="flex ">
-                                <Avatar className="w-[15px] h-[15px] mr-2">
-                                    <AvatarImage src="/avatar2.png" alt="agent" />
-                                </Avatar>
-                                <span className="text-xs">
-                                    CUSTOM
-                                </span>
+                        </span>
+                    </SelectItem>
+                    <SelectItem value="CUSTOM">
+                        <span className="flex ">
+                            <Avatar className="w-[15px] h-[15px] mr-2">
+                                <AvatarImage src="/avatar2.png" alt="agent" />
+                            </Avatar>
+                            <span className="text-xs">
+                                CUSTOM
                             </span>
-                        </SelectItem>
-                        <SelectItem value={null}>
-                            <span className="flex ">
-                                <Avatar className="w-[15px] h-[15px] mr-2">
-                                    <AvatarImage src="/avatar2.png" alt="agent" />
-                                </Avatar>
-                                <span className="text-xs">
-                                    ΌΛΑ ΤΑ TASKS
-                                </span>
+                        </span>
+                    </SelectItem>
+                    <SelectItem value={null}>
+                        <span className="flex ">
+                            <Avatar className="w-[15px] h-[15px] mr-2">
+                                <AvatarImage src="/avatar2.png" alt="agent" />
+                            </Avatar>
+                            <span className="text-xs">
+                                ΌΛΑ ΤΑ TASKS
                             </span>
-                        </SelectItem>
-                    </SelectGroup>
+                        </span>
+                    </SelectItem>
+                </SelectGroup>
 
-                </SelectContent>
+            </SelectContent>
 
 
-            </Select>
+        </Select>
 
     )
 }

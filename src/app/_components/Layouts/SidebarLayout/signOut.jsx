@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import styles from './styles.module.css'
 
-import {  LogOut } from 'lucide-react'
+import {     LogOut } from 'lucide-react'
 
 export default function SignOut() {
     const router = useRouter();

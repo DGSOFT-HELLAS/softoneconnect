@@ -58,7 +58,7 @@ export default  function SidebarLayout({ children }) {
                         DG
                     </div>
                     {openSidebar ? (
-                          <div onClick={() => console.log('logo click')} className={styles.logoTextContainer}>
+                          <div className={styles.logoTextContainer}>
                           <p>DGSOFT Dashboard</p>
                           <span>Workplace</span>
                       </div>
