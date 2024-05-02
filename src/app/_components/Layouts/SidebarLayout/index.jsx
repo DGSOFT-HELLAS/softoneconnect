@@ -18,7 +18,7 @@ import { sidebarStore } from '@/store'
 const navConfig = [
     {
         title: 'Dashboard',
-        path: '/dashboard',
+        path: '#',
         icon: <Gauge />,
     },
     {
@@ -27,7 +27,7 @@ const navConfig = [
     },
     {
         title: 'Εργασίες',
-        path: '#',
+        path: '/dashboard/tickets',
         icon: <ClipboardList />,
     },
     {

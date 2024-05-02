@@ -10,7 +10,7 @@ export const useModalStore = create((set) => ({
 
 
 export const sidebarStore = create((set) => ({
-    openSidebar: false,
+    openSidebar: true,
     setOpenSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
 }))
 

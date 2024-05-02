@@ -15,33 +15,34 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import ActStateModal from "./ActstateModal"
-import { FaSmileBeam } from "react-icons/fa"
-import { size } from "lodash"
+
+
 export const columnCalls = [
-    {
-        id: "select",
-        enableResizing: false,
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                className="mr-6"
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
+    // {
+    //     id: "select",
+    //     enableResizing: false,
+    //     size: 10,
+    //     header: ({ table }) => (
+    //         <Checkbox
+    //             checked={
+    //                 table.getIsAllPageRowsSelected() ||
+    //                 (table.getIsSomePageRowsSelected() && "indeterminate")
+    //             }
+    //             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+    //             aria-label="Select all"
+    //         />
+    //     ),
+    //     cell: ({ row }) => (
+    //         <Checkbox
+    //             className="mr-6"
+    //             checked={row.getIsSelected()}
+    //             onCheckedChange={(value) => row.toggleSelected(!!value)}
+    //             aria-label="Select row"
+    //         />
+    //     ),
+    //     enableSorting: false,
+    //     enableHiding: false,
+    // },
     {
         accessorKey: "ACTOR",
         header: "ACTOR",
@@ -57,6 +58,7 @@ export const columnCalls = [
     {
         accessorKey: "CUSTOMER",
         header: "Πελάτης",
+        size:200,
         cell: ({ row }) => <div>{row.getValue("CUSTOMER")}</div>,
     },
     {
@@ -77,6 +79,7 @@ export const columnCalls = [
     {
         accessorKey: "CCCASK",
         header: "CCCASK",
+        size: 300,
         cell: ({ row }) => <div >{row.getValue("CCCASK")}</div>,
     },
    
@@ -84,6 +87,7 @@ export const columnCalls = [
 
     {
         id: "actions",
+        size: 10,
         enableHiding: false,
         cell: ({ row }) => {
             const payment = row.original
